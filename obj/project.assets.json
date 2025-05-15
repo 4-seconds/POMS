@@ -2334,11 +2334,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Local Repos\\Purchase Order Management System\\Purchase Order Management System.csproj",
+      "projectUniqueName": "F:\\Local_Repos\\Purchase Order Management System\\Purchase Order Management System.csproj",
       "projectName": "Purchase Order Management System",
-      "projectPath": "F:\\Local Repos\\Purchase Order Management System\\Purchase Order Management System.csproj",
+      "projectPath": "F:\\Local_Repos\\Purchase Order Management System\\Purchase Order Management System.csproj",
       "packagesPath": "C:\\Users\\Yididya\\.nuget\\packages\\",
-      "outputPath": "F:\\Local Repos\\Purchase Order Management System\\obj\\",
+      "outputPath": "F:\\Local_Repos\\Purchase Order Management System\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

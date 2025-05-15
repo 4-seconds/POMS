@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Purchase Order Management System")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a8af8024b766bcaf52f6fa5b14a8d05c2bee5fa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dc1eb31eaeec9e9b5ae1c09ac4c02ecffb4ac5d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Purchase Order Management System")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Purchase Order Management System")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

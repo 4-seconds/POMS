@@ -1,0 +1,22 @@
+# Visual Studio files
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.vspscc
+*.vssscc
+
+# Compiled files
+*.dll
+*.exe
+*.pdb
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Other
+.DS_Store  # macOS
+Thumbs.db  # Windows
