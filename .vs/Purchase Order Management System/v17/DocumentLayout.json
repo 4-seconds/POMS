@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\Local Repos\\Purchase Order Management System\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{51870970-AC5C-45C9-ADB1-224E405803E9}|Purchase Order Management System.csproj|f:\\local repos\\purchase order management system\\models\\supplierbranch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51870970-AC5C-45C9-ADB1-224E405803E9}|Purchase Order Management System.csproj|solutionrelative:models\\supplierbranch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SupplierBranch.cs",
+              "DocumentMoniker": "F:\\Local Repos\\Purchase Order Management System\\Models\\SupplierBranch.cs",
+              "RelativeDocumentMoniker": "Models\\SupplierBranch.cs",
+              "ToolTip": "F:\\Local Repos\\Purchase Order Management System\\Models\\SupplierBranch.cs",
+              "RelativeToolTip": "Models\\SupplierBranch.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T07:42:28.747Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
