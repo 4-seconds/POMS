@@ -116,10 +116,19 @@ C:\Users\User\OneDrive\Documents\SideSync\OneDrive\Desktop\Purchase Management S
 C:\Users\User\OneDrive\Documents\SideSync\OneDrive\Desktop\Purchase Management System\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.pdb
 C:\Users\User\OneDrive\Documents\SideSync\OneDrive\Desktop\Purchase Management System\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.genruntimeconfig.cache
 C:\Users\User\OneDrive\Documents\SideSync\OneDrive\Desktop\Purchase Management System\Purchase Order Management System\obj\Debug\net8.0\ref\Purchase Order Management System.dll
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.csproj.AssemblyReference.cache
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.GeneratedMSBuildEditorConfig.editorconfig
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.AssemblyInfoInputs.cache
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.AssemblyInfo.cs
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.csproj.CoreCompileInputs.cache
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.MvcApplicationPartsAssemblyInfo.cache
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.RazorAssemblyInfo.cache
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.RazorAssemblyInfo.cs
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.sourcelink.json
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\appsettings.Development.json
-F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Purchase Order Management System.staticwebassets.endpoints.json
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\appsettings.json
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Purchase Order Management System.staticwebassets.runtime.json
+F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Purchase Order Management System.staticwebassets.endpoints.json
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Purchase Order Management System.exe
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Purchase Order Management System.deps.json
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Purchase Order Management System.runtimeconfig.json
@@ -208,26 +217,13 @@ F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\ru\Microsoft.Co
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.csproj.AssemblyReference.cache
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.GeneratedMSBuildEditorConfig.editorconfig
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.AssemblyInfoInputs.cache
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.AssemblyInfo.cs
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.csproj.CoreCompileInputs.cache
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.MvcApplicationPartsAssemblyInfo.cache
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.RazorAssemblyInfo.cache
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.RazorAssemblyInfo.cs
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\scopedcss\bundle\Purchase Order Management System.styles.css
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\scopedcss\projectbundle\Purchase Order Management System.bundle.scp.css
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.build.json
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.build.json.cache
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.development.json
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets\msbuild.Purchase Order Management System.Microsoft.AspNetCore.StaticWebAssets.props
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets\msbuild.Purchase Order Management System.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets\msbuild.build.Purchase Order Management System.props
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Purchase Order Management System.props
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Purchase Order Management System.props
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.pack.json
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase.743D40C2.Up2Date
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.dll

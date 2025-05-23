@@ -16,7 +16,7 @@ namespace PurchaseOrderManagementSystem.Models
 
         [Required]
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-       
+
         [Required]
         public string UserId { get; set; }
 

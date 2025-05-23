@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using PurchaseOrderManagementSystem.Data;
+using PurchaseOrderManagementSystem.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,14 +14,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(new Version(8, 0, 34)),
 mySqlOptions =>
-       {
-           mySqlOptions.EnableRetryOnFailure(
-               maxRetryCount: 5,
-               maxRetryDelay: TimeSpan.FromSeconds(10),
-               errorNumbersToAdd: null);
-           // Removed EnableSensitiveDataLogging as it is not a valid method for MySqlDbContextOptionsBuilder
-       }));
-
+{
+    mySqlOptions.EnableRetryOnFailure(
+        maxRetryCount: 5,
+        maxRetryDelay: TimeSpan.FromSeconds(10),
+        errorNumbersToAdd: null);
+    // Removed EnableSensitiveDataLogging as it is not a valid method for MySqlDbContextOptionsBuilder
+}));
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 // Add database migration service
 builder.Services.AddRazorPages(); // Add Razor Pages support
 
@@ -37,12 +41,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=UserLogin}/{id?}");
 
 // Apply migrations during startup
 using (var scope = app.Services.CreateScope())

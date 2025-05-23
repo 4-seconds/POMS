@@ -1,0 +1,57 @@
+@using Microsoft.AspNetCore.Identity
+@model IdentityRole
+
+<div class="modal fade @((TempData["Error"] != null || TempData["Success"] != null) ? "show" : "")" 
+     id="addRoleModal" 
+     tabindex="-1" 
+     aria-labelledby="addRoleModalLabel" 
+     aria-hidden="true" 
+     style="@((TempData["Error"] != null || TempData["Success"] != null) ? "display: block;" : "")">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRoleModalLabel">Add New Role</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="@Url.Action("RolePopup", "Admin")">
+                <div class="modal-body">
+                   
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <label for="roleName" class="form-label">Role Name</label>
+                        <input type="text" class="form-control" id="roleName" name="Name" placeholder="Enter role name"
+                            required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Role</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        if (@(TempData["Error"] != null || TempData["Success"] != null ? "true" : "false")) {
+            var modal = new bootstrap.Modal(document.getElementById('addRoleModal'));
+            modal.show();
+        }
+    });
+</script>

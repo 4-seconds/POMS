@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Purchase_Order_Management_System.Models;
 using PurchaseOrderManagementSystem.Models;
-
+using static Enum;
 namespace PurchaseOrderManagementSystem.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -12,7 +13,7 @@ namespace PurchaseOrderManagementSystem.Data
         {
         }
 
-       
+
         public DbSet<Supplier> Suppliers { get; set; } = null!;
         public DbSet<SupplierBranch> SupplierBranches { get; set; } = null!;
         public DbSet<Item> Items { get; set; } = null!;
@@ -63,6 +64,47 @@ namespace PurchaseOrderManagementSystem.Data
             modelBuilder.Entity<Category>()
                 .HasIndex(c => c.CategoryName)
                 .IsUnique();
+
+            // Seed Admin Role
+            var adminRoleId = Guid.NewGuid().ToString();
+            var adminRole = new IdentityRole
+            {
+                Id = adminRoleId,
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(adminRole);
+
+            // Seed Admin User
+            var adminUserId = Guid.NewGuid().ToString();
+            var adminUser = new ApplicationUser
+            {
+                Id = adminUserId,
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                Email = "admin@gmail.com",
+                NormalizedEmail = "ADMIN@GMAIL.COM",
+                EmailConfirmed = true,
+                FirstName = "Admin",
+                LastName = "User",
+                Address = "123 Admin Street",
+                Gender = Gender.Male,
+                AccountStatus = AccountStatus.Active
+            };
+
+
+            var passwordHasher = new PasswordHasher<ApplicationUser>();
+            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin@123");
+
+            modelBuilder.Entity<ApplicationUser>().HasData(adminUser);
+
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                UserId = adminUserId,
+                RoleId = adminRoleId
+            });
         }
+
     }
 }

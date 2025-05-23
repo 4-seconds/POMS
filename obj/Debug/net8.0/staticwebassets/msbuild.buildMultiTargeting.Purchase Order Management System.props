@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Purchase Order Management System.props" />
-</Project>

@@ -1,0 +1,65 @@
+﻿@model List<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "User Role Lists";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">User Role List</h6>
+            <!-- Trigger for Add Role Modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addRoleModal">
+                Add New Role
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Role Name</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model)
+                    {
+                        <tr>
+                            <td>@role.Name</td>
+                            <td>
+                                <!-- Update Button -->
+                                <button type="button" class="btn btn-sm btn-primary"
+                                    onclick="loadUpdateRoleModal('@role.Id')">
+                                    Update
+                                </button>
+                                <!-- Delete Button -->
+                                <a class="btn btn-sm btn-danger"
+                                    href="@Url.Action("DeleteRole", "Admin", new { id = role.Id })"
+                                    onclick="return confirm('Are you sure you want to delete this role?');">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@Html.Partial("RolePopup", new Microsoft.AspNetCore.Identity.IdentityRole())
+<!-- Dynamic Modal Container -->
+<div id="updateRoleModalContainer"></div>
+
+<script>
+    function loadUpdateRoleModal(roleId) {
+        // Use AJAX to fetch the modal content
+        $.get('@Url.Action("UpdateRole", "Admin")', { roleId: roleId }, function (data) {
+            // Inject the fetched content into the modal container
+            $('#updateRoleModalContainer').html(data);
+
+            // Initialize and show the modal
+            var modal = new bootstrap.Modal(document.getElementById('updateRoleModal'));
+            modal.show();
+        });
+    }
+</script>

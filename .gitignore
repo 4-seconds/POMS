@@ -132,3 +132,6 @@ $RECYCLE.BIN/
 
 _NCrunch*
 bin/Debug/net8.0/
+
+
+.vs/

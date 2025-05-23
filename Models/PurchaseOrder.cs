@@ -9,12 +9,12 @@ namespace Purchase_Order_Management_System.Models
         public string OrderId { get; set; } = Guid.NewGuid().ToString();
 
         public string RequestId { get; set; }
-        [ForeignKey ("RequestId")]
+        [ForeignKey("RequestId")]
         public PurchaseOrder purchaseOrder { get; set; }
 
         public string BidId { get; set; }
 
-        [ForeignKey ("BidId")]
+        [ForeignKey("BidId")]
         public Bid Bid { get; set; }
 
         [DataType(DataType.Date)]
@@ -22,12 +22,12 @@ namespace Purchase_Order_Management_System.Models
 
         public string OrderedBy { get; set; }
 
-        [ForeignKey ("OrderedBy")]
+        [ForeignKey("OrderedBy")]
 
-        public  ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public string RequestedBy { get; set; }
 
-        [ForeignKey ("RequestedBy")]
+        [ForeignKey("RequestedBy")]
         public ApplicationUser Requested_by { get; set; }
 
         [StringLength(50)]

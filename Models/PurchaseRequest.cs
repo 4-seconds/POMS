@@ -12,31 +12,31 @@ namespace Purchase_Order_Management_System.Models
 
         [Required]
         public string CreatedBy { get; set; }
-  
+
         [ForeignKey("CreatedBy")]
         public ApplicationUser User { get; set; }
 
 
-        
+
         public string existingItem { get; set; }
 
         [ForeignKey("existingItems")]
-        public Item existintItem { get; set; } 
+        public Item existintItem { get; set; }
 
         [Required]
-        public string Item{ get; set; }
+        public string Item { get; set; }
 
         [Required]
         public string ItemDescription { get; set; }
 
         [Required]
-        public UOM Unit{ get; set; }
+        public UOM Unit { get; set; }
 
         [Required]
         public int quantity { get; set; }
 
         [Required]
-        public string remark{ get; set; }
+        public string remark { get; set; }
 
         [Required]
         public string reviwed_by { get; set; }
@@ -50,7 +50,7 @@ namespace Purchase_Order_Management_System.Models
         [Required]
         public PurchaseRequestStatus Status { get; set; }
 
-      
-       
+
+
     }
 }
