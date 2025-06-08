@@ -1,7 +1,7 @@
 using PurchaseOrderManagementSystem.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace Purchase_Order_Management_System.Models
+namespace PurchaseOrderManagementSystem.Models
 {
     public class Category : BaseModel
     {

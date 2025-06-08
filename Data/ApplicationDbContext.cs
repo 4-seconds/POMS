@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Purchase_Order_Management_System.Models;
+//using Purchase_Order_Management_System.Models;
 using PurchaseOrderManagementSystem.Models;
 using static Enum;
+
 namespace PurchaseOrderManagementSystem.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -20,8 +21,11 @@ namespace PurchaseOrderManagementSystem.Data
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Bid> Bids { get; set; } = null!;
         public DbSet<GoodsReceived> GoodsReceived { get; set; } = null!;
-        public DbSet<PurchaseRequestOrder> PurchaseRequests { get; set; } = null!;
+        public DbSet<PurchaseRequest> PurchaseRequests { get; set; } = null!;
         public DbSet<ActivityLog> ActivityLogs { get; set; } = null!;
+        public DbSet<Tender> Tenders { get; set; } = null!;
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; } = null!; // Explicitly added for PurchaseOrder
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

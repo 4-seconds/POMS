@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Purchase_Order_Management_System.Models;
+using PurchaseOrderManagementSystem.Models;
 
-namespace Purchase_Order_Management_System.Models
+namespace PurchaseOrderManagementSystem.Models
 {
     public class SupplierBranch : BaseModel
     {
@@ -17,6 +17,8 @@ namespace Purchase_Order_Management_System.Models
 
         [Required]
         public string SupplierId { get; set; }
+        
+        //navigation property
 
         [ForeignKey("SupplierId")]
         public virtual Supplier Supplier { get; set; }

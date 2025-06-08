@@ -1,0 +1,117 @@
+@model IEnumerable<PurchaseOrderManagementSystem.Models.Bid>
+
+  @{
+  ViewData["Title"] = "Supplier - Open Auctions";
+  Layout = "_Layout";
+
+  Func<string, string> GetStatusColor = status =>
+    {
+    return status switch
+    {
+    "open" => "bg-green-100 text-green-800",
+    "closed" => "bg-red-100 text-red-800",
+    "won" => "bg-blue-100 text-blue-800",
+    _ => "bg-gray-100 text-gray-800"
+    };
+    };
+    }
+
+    <div class="min-h-screen bg-gray-50">
+      <!-- Header -->
+      <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center py-4">
+            <!-- Back to Dashboard Button -->
+            <a href="/Dashboard">
+              <button type="button"
+                class="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Dashboard
+              </button>
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900 ml-4">Supplier - Open Auctions</h1>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+          <div class="bg-white shadow rounded-lg">
+            <!-- Card Header -->
+            <div class="flex items-center justify-between border-b px-4 py-3">
+              <h2 class="text-lg font-semibold text-gray-800">Available Auctions for Bidding</h2>
+              <a href="/Supplier/MyBids">
+                <button type="button"
+                  class="inline-flex items-center px-3 py-1 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M12 12h.01" />
+                  </svg>
+                  My Bids
+                </button>
+              </a>
+            </div>
+
+            <!-- Card Content / Table -->
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <!-- Table Head -->
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Auction
+                      End Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
+                    </th>
+                  </tr>
+                </thead>
+                <!-- Table Body -->
+                <tbody class="bg-white divide-y divide-gray-200">
+                  @if (Model.Any())
+                  {
+                  foreach (var bid in Model)
+                  {
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                      @bid.PurchaseRequest?.existingItem?.ItemName</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">@bid.PurchaseRequest?.quantity</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                      @bid.AuctionEndDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium @GetStatusColor(bid.Status.ToString().ToLower())">
+                        @bid.Status
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <a asp-action="ViewAuction" asp-route-id="@bid.Id"
+                        class="text-indigo-600 hover:text-indigo-900">View Details</a>
+                    </td>
+                  </tr>
+                  }
+                  }
+                  else
+                  {
+                  <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                      No open auctions found.
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>

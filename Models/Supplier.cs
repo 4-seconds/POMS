@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using static Enum;
 using PurchaseOrderManagementSystem.Models;
 
-namespace Purchase_Order_Management_System.Models
+namespace PurchaseOrderManagementSystem.Models
 {
     public class Supplier : BaseModel
     {

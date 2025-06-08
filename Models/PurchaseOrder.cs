@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PurchaseOrderManagementSystem.Models;
-namespace Purchase_Order_Management_System.Models
+
+namespace PurchaseOrderManagementSystem.Models
 {
     public class PurchaseOrder : BaseModel
     {

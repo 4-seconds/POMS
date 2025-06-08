@@ -1,4 +1,3 @@
-using Purchase_Order_Management_System.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -50,15 +49,14 @@ namespace PurchaseOrderManagementSystem.Models
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
         public string CreatedBy { get; set; }
-
         public string UpdatedBy { get; set; }
 
         // Navigation properties
         public virtual ICollection<Bid> Bids { get; set; }
-        public virtual ICollection<PurchaseRequestOrder> PurchaseRequests { get; set; }
+        public virtual ICollection<PurchaseRequest> PurchaseRequests { get; set; }
         public virtual ICollection<GoodsReceived> GoodsReceived { get; set; }
     }
 }

@@ -1,8 +1,8 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Purchase_Order_Management_System.Models;
+using PurchaseOrderManagementSystem.Models;
+using System.Diagnostics;
 
-namespace Purchase_Order_Management_System.Controllers
+namespace PurchaseOrderManagementSystem.Controllers
 {
     public class HomeController : Controller
     {

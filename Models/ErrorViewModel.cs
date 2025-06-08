@@ -1,4 +1,4 @@
-namespace Purchase_Order_Management_System.Models
+namespace PurchaseOrderManagementSystem.Models
 {
     public class ErrorViewModel
     {

@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Enum;
 
-namespace Purchase_Order_Management_System.Models
+namespace PurchaseOrderManagementSystem.Models
 {
-    public class PurchaseRequestOrder : BaseModel
+    public class PurchaseRequest : BaseModel
     {
         [Key]
         public string purchaseRequestId { get; set; } = Guid.NewGuid().ToString();
@@ -18,10 +18,10 @@ namespace Purchase_Order_Management_System.Models
 
 
 
-        public string existingItem { get; set; }
+        public string ExistingItemId { get; set; }
 
-        [ForeignKey("existingItems")]
-        public Item existintItem { get; set; }
+        [ForeignKey("existingItemId")]
+        public virtual Item existingItem { get; set; }
 
         [Required]
         public string Item { get; set; }
@@ -45,7 +45,7 @@ namespace Purchase_Order_Management_System.Models
         public ApplicationUser reviewd_by { get; set; }
 
         [Required]
-        public string ReviewdComment { get; set; }
+        public string BudgetComment { get; set; }
 
         [Required]
         public PurchaseRequestStatus Status { get; set; }

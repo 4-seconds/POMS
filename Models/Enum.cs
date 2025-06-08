@@ -19,9 +19,9 @@ public class Enum
     }
     public enum AccountStatus
     {
+        Pending,
         Active,
-        Inactive,
-
+        Inactive
     }
 
     public enum UOM
@@ -29,5 +29,20 @@ public class Enum
         KG,
         Litter,
         Meter
+    }
+
+    public enum TenderStatus
+    {
+        Open,
+        Closed,
+        Cancelled
+    }
+
+    public enum BidStatus
+    {
+        Open,
+        Closed,
+        Awarded,
+        Rejected
     }
 }

@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-using Purchase_Order_Management_System.Models;
 using static Enum;
 
 namespace PurchaseOrderManagementSystem.Models

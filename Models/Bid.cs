@@ -1,8 +1,8 @@
+using PurchaseOrderManagementSystem.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Purchase_Order_Management_System.Models;
-using PurchaseOrderManagementSystem.Models;
+using static Enum;
 
 namespace PurchaseOrderManagementSystem.Models
 {
@@ -19,10 +19,31 @@ namespace PurchaseOrderManagementSystem.Models
         public virtual Supplier Supplier { get; set; }
 
         [Required]
+        public string TenderId { get; set; }
+        [ForeignKey("TenderId")]
+        public virtual Tender Tender { get; set; }
+
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal BidAmount { get; set; }
+
+        [Required]
+        public string Currency { get; set; } = "Birr";
+
+        [Required]
+        public string PaymentTerms { get; set; } = "Cash on Delivery";
+
+        public string DeliveryLocation { get; set; }
+
+        public string Remarks { get; set; }
+
+        public BidStatus Status { get; set; }
+
+        [Required]
         public string PurchaseRequestId { get; set; }
 
         [ForeignKey("PurchaseRequestId")]
-        public virtual PurchaseRequestOrder PurchaseRequest { get; set; }
+        public virtual PurchaseRequest PurchaseRequest { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -32,8 +53,6 @@ namespace PurchaseOrderManagementSystem.Models
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        public string Status { get; set; } = "Pending";
 
         // Navigation property for GoodsReceived relationship
         public virtual ICollection<GoodsReceived> GoodsReceived { get; set; } = new HashSet<GoodsReceived>();

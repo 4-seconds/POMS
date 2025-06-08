@@ -1,0 +1,59 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.RegisterViewModel
+@{
+ViewData["Title"] = "Register";
+}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+    <div class="w-full max-w-md">
+        <div class="bg-white shadow rounded-lg px-8 py-6">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-900">Upper Awash Agro Industry</h1>
+                <p class="text-gray-600">E-Procurement System</p>
+            </div>
+            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="space-y-4">
+                <div asp-validation-summary="All" class="text-red-600 text-sm"></div>
+
+                <div>
+                    <label asp-for="FirstName" class="block text-sm font-medium text-gray-700"></label>
+                    <input asp-for="FirstName" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" required />
+                    <span asp-validation-for="FirstName" class="text-red-600 text-sm"></span>
+                </div>
+
+                <div>
+                    <label asp-for="LastName" class="block text-sm font-medium text-gray-700"></label>
+                    <input asp-for="LastName" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" required />
+                    <span asp-validation-for="LastName" class="text-red-600 text-sm"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+                    <input asp-for="Email" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" required />
+                    <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Password" class="block text-sm font-medium text-gray-700"></label>
+                    <input asp-for="Password" type="password" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" required />
+                    <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
+                </div>
+
+                <div>
+                    <label asp-for="ConfirmPassword" class="block text-sm font-medium text-gray-700"></label>
+                    <input asp-for="ConfirmPassword" type="password" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" required />
+                    <span asp-validation-for="ConfirmPassword" class="text-red-600 text-sm"></span>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-medium">
+                    Register
+                </button>
+            </form>
+            <div class="mt-4 text-center">
+                <p class="text-sm text-gray-600">Already have an account? <a asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="font-medium text-blue-600 hover:text-blue-500">Login here</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

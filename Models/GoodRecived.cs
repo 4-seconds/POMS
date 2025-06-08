@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Purchase_Order_Management_System.Models;
 using PurchaseOrderManagementSystem.Models;
 using static Enum;
 
@@ -17,7 +16,7 @@ namespace PurchaseOrderManagementSystem.Models
         public string PurchaseRequestId { get; set; }
 
         [ForeignKey("PurchaseRequestId")]
-        public virtual PurchaseRequestOrder PurchaseRequest { get; set; }
+        public virtual PurchaseRequest PurchaseRequest { get; set; }
 
         [Required]
         public string ReceivedById { get; set; }
