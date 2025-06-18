@@ -1,0 +1,131 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.AuctionDetailsViewModel
+
+@{
+    ViewData["Title"] = "Supplier - View Auction";
+    Layout = "_Layout";
+}
+
+<div class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center py-4">
+                <a href="/Supplier/ActiveAuctions"
+                   class="inline-flex items-center bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back to All Auctions
+                </a>
+                <h1 class="text-2xl font-bold text-gray-900 ml-4">Auction Details</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="bg-white shadow rounded-lg">
+                <div class="border-b px-4 py-3">
+                    <h2 class="text-lg font-semibold text-gray-800">Auction Information</h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Item Name</dt>
+                            <dd class="mt-1 text-lg text-gray-900">@Model.Auction.PurchaseRequest?.existingItem?.ItemName</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Quantity</dt>
+                            <dd class="mt-1 text-lg text-gray-900">@Model.Auction.PurchaseRequest?.quantity</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Auction End Date</dt>
+                            <dd class="mt-1 text-lg text-gray-900">@Model.Auction.EndDate.ToString("yyyy-MM-dd HH:mm")</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Delivery Deadline</dt>
+                            <dd class="mt-1 text-lg text-gray-900">@Model.Auction.DeliveryDeadline.ToString("yyyy-MM-dd")</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Status</dt>
+                            <dd class="mt-1">
+                                <span class="@(Model.Auction.Status == AuctionStatus.Open ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800") inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                                    @Model.Auction.Status
+                                </span>
+                            </dd>
+                        </div>
+                    </dl>
+
+                    @if (Model.Auction.Status == AuctionStatus.Open && Model.Auction.EndDate > DateTime.UtcNow)
+                    {
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Place Your Bid</h3>
+                            <form asp-action="PlaceBid" asp-controller="Supplier" method="post" class="space-y-4">
+                                <input type="hidden" name="id" value="@Model.Auction.Id" />
+                                <div>
+                                    <label for="price" class="block text-sm font-medium text-gray-700">Bid Amount</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" id="price" name="price"
+                                               class="mt-1 pr-3 pl-8 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                                               placeholder="0.00" required />
+                                    </div>
+                                </div>
+                                <button type="submit"
+                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-medium">
+                                    Submit Bid
+                                </button>
+                            </form>
+                        </div>
+                    }
+
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Bid History</h3>
+                        @if (Model.Auction.Bids.Any())
+                        {
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bid Amount</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach (var bid in Model.Auction.Bids.OrderByDescending(b => b.Price))
+                                        {
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    @bid.Supplier?.BusinessName
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$@bid.Price.ToString("F2")</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="@(bid.Status == BidStatus.Won ? "bg-green-100 text-green-800" : bid.Status == BidStatus.Lost ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-800") inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                                                        @bid.Status
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">@bid.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-gray-500 text-center py-4">No bids have been placed yet.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

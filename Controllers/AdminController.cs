@@ -1,245 +1,454 @@
-﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PurchaseOrderManagementSystem.Models;
-using System.Data;
-using System.Threading.Tasks;
+using PurchaseOrderManagementSystem.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using PurchaseOrderManagementSystem.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace PurchaseOrderManagementSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public AdminController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly DbSeeder _dbSeeder;
+        private readonly ILogger<AdminController> _logger;
+
+        public AdminController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            DbSeeder dbSeeder,
+            ILogger<AdminController> logger)
         {
+            _context = context;
             _userManager = userManager;
-            _roleManager = roleManager;
+            _dbSeeder = dbSeeder;
+            _logger = logger;
         }
 
-        public IActionResult AdminIndex()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        public IActionResult UserManagement()
-        {
-            return View();
-        }
-
-
-        public async Task<IActionResult> UserLists()
-        {
-            try
+            // Get current user
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
             {
-                var users = _userManager.Users.ToList();
-                return View(users ?? new List<ApplicationUser>());
+                return RedirectToAction("Login", "Account");
             }
-            catch (Exception ex)
+
+            // Get user roles
+            var userRoles = await _userManager.GetRolesAsync(currentUser);
+
+            // Log roles for debugging
+            _logger.LogInformation($"Current user: {currentUser.Email}, Roles: {string.Join(", ", userRoles)}");
+
+            // Check if user has Admin role
+            if (!userRoles.Contains("Admin"))
             {
-
-                TempData["Error"] = "An error occurred while retrieving the user list.";
-                return View(new List<ApplicationUser>());
+                // If user doesn't have Admin role, add it
+                var result = await _userManager.AddToRoleAsync(currentUser, "Admin");
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"Added Admin role to user {currentUser.Email}");
+                }
+                else
+                {
+                    _logger.LogError($"Failed to add Admin role to user {currentUser.Email}: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                }
             }
-        }
 
-        public async Task<IActionResult> UserRoleLists()
-        {
-            var roles = _roleManager.Roles.ToList();
-            return View(roles);
-
-        }
-
-        public async Task<IActionResult> UserRoleMapping()
-        {
-            var users = _userManager.Users.ToList();
-
-            // Fetch all roles
-            var roles = _roleManager.Roles.ToList();
-
-            // Create a dictionary to map user IDs to their roles
-            var userRoles = new Dictionary<string, List<string>>();
-
+            // Fetch all users with their roles
+            var users = await _userManager.Users.ToListAsync();
+            var usersWithRoles = new List<(ApplicationUser User, IList<string> Roles)>();
             foreach (var user in users)
             {
-                var rolesForUser = await _userManager.GetRolesAsync(user);
-                userRoles[user.Id] = rolesForUser.ToList();
+                var roles = await _userManager.GetRolesAsync(user);
+                usersWithRoles.Add((user, roles));
             }
+            ViewBag.UsersWithRoles = usersWithRoles;
 
-            // Pass the model to the view
-            var model = new Tuple<List<ApplicationUser>, List<IdentityRole>, Dictionary<string, List<string>>>(users, roles, userRoles);
-            return View(model);
-        }
-        public IActionResult RolePopup()
-        {
-            return PartialView("RolePopup");
-        }
-        [HttpPost]
-        public async Task<IActionResult> RolePopup(Role model)
-        {
-            if (ModelState.IsValid)
-            {
-                if (await _roleManager.RoleExistsAsync(model.Name))
-                {
-                    TempData["Error"] = "Role already exists.";
-                    return RedirectToAction("UserRoleLists");
-                }
+            // Fetch all suppliers with their associated user data
+            var suppliers = await _context.Suppliers.Include(s => s.User).ToListAsync();
+            ViewBag.Suppliers = suppliers;
 
-                var role = new IdentityRole { Name = model.Name };
-                var result = await _roleManager.CreateAsync(role);
-
-                if (result.Succeeded)
-                {
-                    TempData["Success"] = "Role added successfully.";
-                }
-                else
-                {
-                    TempData["Error"] = string.Join("; ", result.Errors.Select(e => e.Description));
-                }
-            }
-            else
-            {
-                TempData["Error"] = "Invalid input. Please check the form.";
-            }
-
-            return RedirectToAction("UserRoleLists");
-        }
-        [HttpGet]
-        public async Task<IActionResult> UpdateRole(string roleId)
-        {
-            // Fetch the role by ID
-            var role = await _roleManager.FindByIdAsync(roleId);
-            if (role == null)
-            {
-                TempData["Error"] = "Role not found.";
-                return RedirectToAction("UserRoleLists");
-            }
-
-            // Return the partial view for the modal
-            return PartialView("UpdateRolePopup", new Role { Id = role.Id, Name = role.Name });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateRole(Role model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Fetch the existing role by ID
-                var role = await _roleManager.FindByIdAsync(model.Id);
-                if (role == null)
-                {
-                    TempData["Error"] = "Role not found.";
-                    return RedirectToAction("UserRoleLists");
-                }
-
-
-                var existingRole = await _roleManager.FindByNameAsync(model.Name);
-                if (existingRole != null && existingRole.Id != model.Id)
-                {
-                    TempData["Error"] = "Role already exists.";
-                    return RedirectToAction("UserRoleLists");
-                }
-
-
-                role.Name = model.Name;
-                var result = await _roleManager.UpdateAsync(role);
-
-                if (result.Succeeded)
-                {
-                    TempData["Success"] = "Role updated successfully.";
-                }
-                else
-                {
-                    TempData["Error"] = string.Join("; ", result.Errors.Select(e => e.Description));
-                }
-            }
-            else
-            {
-                TempData["Error"] = "Invalid input. Please check the form.";
-            }
-
-            return RedirectToAction("UserRoleLists");
+            return View();
         }
 
         [HttpGet]
-        public IActionResult AddUser()
+        public async Task<IActionResult> CreateUser()
         {
-            var model = new RegisterUserViewModel();
-            return View(model);
+            ViewBag.Roles = new[] { "SupplyLogistics", "Budget", "GeneralManager", "ProcurementOfficer" };
+            ViewBag.Branches = await _context.Branches.ToListAsync();
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(RegisterUserViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             if (!ModelState.IsValid)
             {
-
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-
-                TempData["Error"] = string.Join("<br>", errors);
-
-
+                ViewBag.Roles = new[] { "SupplyLogistics", "Budget", "GeneralManager", "ProcurementOfficer" };
+                ViewBag.Branches = await _context.Branches.ToListAsync();
                 return View(model);
             }
 
+            // Generate username based on name and role
+            var username = $"{model.FirstName.ToLower()}.{model.LastName.ToLower()}.{model.Role.ToLower()}";
 
-            var existingUserByEmail = await _userManager.FindByEmailAsync(model.Email);
-            var existingUserByUsername = await _userManager.FindByNameAsync(model.UserName);
-
-            if (existingUserByEmail != null)
+            // Check if username already exists
+            var existingUser = await _userManager.FindByNameAsync(username);
+            if (existingUser != null)
             {
-                TempData["Error"] = "A user with this email already exists.";
+                ModelState.AddModelError(string.Empty, "A user with this name and role already exists.");
+                ViewBag.Roles = new[] { "SupplyLogistics", "Budget", "GeneralManager", "ProcurementOfficer" };
                 return View(model);
             }
 
-            if (existingUserByUsername != null)
+            // Create the user
+            var user = new ApplicationUser
             {
-                TempData["Error"] = "A user with this username already exists.";
-                return View(model);
-            }
+                UserName = username,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                AccountStatus = AccountStatus.Active
+            };
 
-            // Validate Password and ConfirmPassword
-            if (model.Password != model.ConfirmPassword)
+            // Default password: FirstName@123
+            var defaultPassword = $"{model.FirstName}@123";
+
+            // Configure password validation
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var passwordResult = await passwordValidator.ValidateAsync(_userManager, user, defaultPassword);
+
+            if (!passwordResult.Succeeded)
             {
-                TempData["Error"] = "Passwords do not match.";
-                return View(model);
+                // If the default password doesn't meet requirements, use a more complex one
+                defaultPassword = $"{model.FirstName}@123A";
             }
 
+            var result = await _userManager.CreateAsync(user, defaultPassword);
+
+            if (result.Succeeded)
+            {
+                // Assign the selected role
+                await _userManager.AddToRoleAsync(user, model.Role);
+                TempData["SuccessMessage"] = $"User created successfully. Default password is: {defaultPassword}";
+                return RedirectToAction(nameof(ManageUsers));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            ViewBag.Roles = new[] { "SupplyLogistics", "Budget", "GeneralManager", "ProcurementOfficer" };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveSupplier(string id)
+        {
+            var supplier = await _context.Suppliers.FindAsync(id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            supplier.Status = SupplierStatus.Active;
+            await _context.SaveChangesAsync();
+
+            // Add user to Supplier role
+            var user = await _userManager.FindByIdAsync(supplier.UserId);
+            if (user != null)
+            {
+                await _userManager.AddToRoleAsync(user, "Supplier");
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectSupplier(string id)
+        {
+            var supplier = await _context.Suppliers.FindAsync(id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            // Remove the associated user account
+            var user = await _userManager.FindByIdAsync(supplier.UserId);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
+
+            _context.Suppliers.Remove(supplier);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SuspendSupplier(string id)
+        {
+            var supplier = await _context.Suppliers.FindAsync(id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            supplier.Status = SupplierStatus.Suspended;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(ManageSuppliers));
+        }
+
+        public async Task<IActionResult> ManageSuppliers()
+        {
+            var suppliers = await _context.Suppliers.Include(s => s.User).ToListAsync();
+            return View(suppliers);
+        }
+
+        public async Task<IActionResult> ManageUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var usersWithRoles = new List<(ApplicationUser User, IList<string> Roles)>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                usersWithRoles.Add((user, roles));
+            }
+
+            return View(usersWithRoles);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var supplier = await _context.Suppliers.FirstOrDefaultAsync(s => s.UserId == user.Id);
+
+            ViewBag.User = user;
+            ViewBag.UserRoles = userRoles;
+            ViewBag.Supplier = supplier;
+
+
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUserRoles(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var allRoles = new[] { "SupplyLogistics", "Budget", "GeneralManager", "ProcurementOfficer", "Supplier" };
+
+            ViewBag.User = user;
+            ViewBag.UserRoles = userRoles;
+            ViewBag.AllRoles = allRoles;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUserRoles(string id, string selectedRole)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, userRoles);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to remove existing roles.");
+                ViewBag.User = user;
+                ViewBag.UserRoles = userRoles;
+                ViewBag.AllRoles = new[] { "SupplyLogistics", "Budget", "GeneralManager", "ProcurementOfficer", "Supplier" };
+                return View();
+            }
+
+            if (!string.IsNullOrEmpty(selectedRole))
+            {
+                result = await _userManager.AddToRoleAsync(user, selectedRole);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to add new role.");
+                    ViewBag.User = user;
+                    ViewBag.UserRoles = userRoles;
+                    ViewBag.AllRoles = new[] { "SupplyLogistics", "Budget", "GeneralManager", "ProcurementOfficer", "Supplier" };
+                    return View();
+                }
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to delete user.");
+                return View("ManageUsers", await _userManager.Users.ToListAsync());
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewSupplier(string id)
+        {
+            var supplier = await _context.Suppliers
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            return View(supplier);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SeedDatabase()
+        {
             try
             {
-                // Create the user
-                var user = new ApplicationUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    EmailConfirmed = true // Auto-confirm email for admin-created users
-                };
-
-                // Save the user with the password
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    TempData["Success"] = "User created successfully!";
-                    return RedirectToAction("UserLists");
-                }
-                else
-                {
-                    TempData["Error"] = string.Join("<br>", result.Errors.Select(e => e.Description));
-                }
+                await _dbSeeder.SeedAsync();
+                TempData["SuccessMessage"] = "Database seeded successfully!";
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "An error occurred while creating the user.";
+                TempData["ErrorMessage"] = $"Error seeding database: {ex.Message}";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Branch Management
+
+        [HttpGet]
+        public async Task<IActionResult> Branches()
+        {
+            var branches = await _context.Branches.ToListAsync();
+            return View(branches);
+        }
+
+        [HttpGet]
+        public IActionResult CreateBranch()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateBranch(Branch branch)
+        {
+            if (ModelState.IsValid)
+            {
+                branch.Id = Guid.NewGuid();
+                _context.Add(branch);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Branch created successfully!";
+                return RedirectToAction(nameof(Branches));
+            }
+            return View(branch);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditBranch(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
+            var branch = await _context.Branches.FindAsync(id);
+            if (branch == null)
+            {
+                return NotFound();
+            }
+            return View(branch);
+        }
 
-            return View(model);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditBranch(Guid id, [Bind("Id,BranchName,Location,ContactNumber,Email")] Branch branch)
+        {
+            if (id != branch.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(branch);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Branch updated successfully!";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Branches.Any(e => e.Id == branch.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Branches));
+            }
+            return View(branch);
+        }
+
+        [HttpPost, ActionName("DeleteBranch")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteBranchConfirmed(Guid id)
+        {
+            var branch = await _context.Branches.FindAsync(id);
+            if (branch != null)
+            {
+                _context.Branches.Remove(branch);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Branch deleted successfully!";
+            }
+            return RedirectToAction(nameof(Branches));
         }
     }
 }

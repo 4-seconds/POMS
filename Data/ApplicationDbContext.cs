@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-//using Purchase_Order_Management_System.Models;
 using PurchaseOrderManagementSystem.Models;
-using static Enum;
 
 namespace PurchaseOrderManagementSystem.Data
 {
@@ -14,22 +11,47 @@ namespace PurchaseOrderManagementSystem.Data
         {
         }
 
-
         public DbSet<Supplier> Suppliers { get; set; } = null!;
         public DbSet<SupplierBranch> SupplierBranches { get; set; } = null!;
         public DbSet<Item> Items { get; set; } = null!;
-        public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Bid> Bids { get; set; } = null!;
         public DbSet<GoodsReceived> GoodsReceived { get; set; } = null!;
         public DbSet<PurchaseRequest> PurchaseRequests { get; set; } = null!;
         public DbSet<ActivityLog> ActivityLogs { get; set; } = null!;
-        public DbSet<Tender> Tenders { get; set; } = null!;
-        public DbSet<PurchaseOrder> PurchaseOrders { get; set; } = null!; // Explicitly added for PurchaseOrder
-
+        public DbSet<Auction> Auctions { get; set; } = null!;
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; } = null!;
+        public DbSet<PaymentTransfer> PaymentTransfers { get; set; } = null!;
+        public DbSet<Branch> Branches { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Configure Auction relationship
+            modelBuilder.Entity<Auction>()
+                .HasOne(a => a.PurchaseRequest)
+                .WithMany()
+                .HasForeignKey(a => a.PurchaseRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure PurchaseOrder relationships
+            modelBuilder.Entity<PurchaseOrder>()
+                .HasOne(po => po.PurchaseRequest)
+                .WithMany()
+                .HasForeignKey(po => po.RequestId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PurchaseOrder>()
+                .HasOne(po => po.Bid)
+                .WithMany()
+                .HasForeignKey(po => po.BidId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PurchaseOrder>()
+                .HasOne(po => po.OrderedByUser)
+                .WithMany()
+                .HasForeignKey(po => po.OrderedBy)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configure relationships
             modelBuilder.Entity<Bid>()
@@ -50,12 +72,6 @@ namespace PurchaseOrderManagementSystem.Data
                 .HasForeignKey(sb => sb.SupplierId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Item>()
-                .HasOne(i => i.Category)
-                .WithMany(c => c.Items)
-                .HasForeignKey(i => i.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // Configure unique constraints
             modelBuilder.Entity<SupplierBranch>()
                 .HasIndex(sb => new { sb.SupplierId, sb.BranchName })
@@ -64,51 +80,6 @@ namespace PurchaseOrderManagementSystem.Data
             modelBuilder.Entity<Item>()
                 .HasIndex(i => i.ItemName)
                 .IsUnique();
-
-            modelBuilder.Entity<Category>()
-                .HasIndex(c => c.CategoryName)
-                .IsUnique();
-
-            // Seed Admin Role
-            var adminRoleId = Guid.NewGuid().ToString();
-            var adminRole = new IdentityRole
-            {
-                Id = adminRoleId,
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            };
-            modelBuilder.Entity<IdentityRole>().HasData(adminRole);
-
-            // Seed Admin User
-            var adminUserId = Guid.NewGuid().ToString();
-            var adminUser = new ApplicationUser
-            {
-                Id = adminUserId,
-                UserName = "admin",
-                NormalizedUserName = "ADMIN",
-                Email = "admin@gmail.com",
-                NormalizedEmail = "ADMIN@GMAIL.COM",
-                EmailConfirmed = true,
-                FirstName = "Admin",
-                LastName = "User",
-                Address = "123 Admin Street",
-                Gender = Gender.Male,
-                AccountStatus = AccountStatus.Active
-            };
-
-
-            var passwordHasher = new PasswordHasher<ApplicationUser>();
-            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin@123");
-
-            modelBuilder.Entity<ApplicationUser>().HasData(adminUser);
-
-
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
-            {
-                UserId = adminUserId,
-                RoleId = adminRoleId
-            });
         }
-
     }
 }

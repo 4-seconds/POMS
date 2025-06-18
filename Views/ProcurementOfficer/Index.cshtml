@@ -1,0 +1,61 @@
+@{
+ViewData["Title"] = "Procurement Officer Dashboard";
+Layout = "_Layout";
+}
+
+<div class="min-h-screen bg-gray-50">
+  <header class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="py-4">
+        <h1 class="text-2xl font-bold text-gray-900">Procurement Officer Dashboard</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+      <div class="grid grid-cols-2 gap-6">
+        <!-- All Purchase Requests -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Purchase Requests</h2>
+            <p class="text-sm text-gray-500 mb-4">Manage and view all purchase requests.</p>
+            <a href="/ProcurementOfficer/ApprovedPurchaseRequests"
+              class="text-blue-600 hover:text-blue-900 font-medium">View Purchase Requests &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Purchase Orders -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Purchase Orders</h2>
+            <p class="text-sm text-gray-500 mb-4">Oversee all purchase orders, including pending, ready for pickup, and
+              completed orders.</p>
+            <a href="/ProcurementOfficer/MyPurchaseOrders" class="text-blue-600 hover:text-blue-900 font-medium">View
+              All Purchase Orders &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Auctions -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Auctions</h2>
+            <p class="text-sm text-gray-500 mb-4">Monitor all auctions, both open and closed, and manage bids.</p>
+            <a href="/ProcurementOfficer/AllAuctions" class="text-blue-600 hover:text-blue-900 font-medium">View All
+              Auctions &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Received Goods -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+          <div class="p-5">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Received Goods</h2>
+            <p class="text-sm text-gray-500 mb-4">View a list of all received goods.</p>
+            <a href="/ProcurementOfficer/ReceivedGoods" class="text-blue-600 hover:text-blue-900 font-medium">View
+              Received Goods &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,44 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.ProfileViewModel
+@{ ViewData["Title"] = "Profile"; }
+
+<div class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center py-4">
+                <h1 class="text-2xl font-bold text-gray-900">Profile</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">First Name:</label>
+                    <p class="text-gray-900">@Model.FirstName</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Last Name:</label>
+                    <p class="text-gray-900">@Model.LastName</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+                    <p class="text-gray-900">@Model.Email</p>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Phone Number:</label>
+                    <p class="text-gray-900">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "N/A" : Model.PhoneNumber)</p>
+                </div>
+
+                <h2 class="text-xl font-bold mb-4">Settings</h2>
+                <ul class="list-disc ml-5">
+                    <li><a asp-controller="Profile" asp-action="UpdateName" class="text-blue-500 hover:underline">Update Name</a></li>
+                    <li><a asp-controller="Profile" asp-action="UpdateEmail" class="text-blue-500 hover:underline">Update Email</a></li>
+                    <li><a asp-controller="Profile" asp-action="UpdatePassword" class="text-blue-500 hover:underline">Update Password</a></li>
+                    <li><a asp-controller="Profile" asp-action="UpdatePhoneNumber" class="text-blue-500 hover:underline">Update Phone Number</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</div>
+

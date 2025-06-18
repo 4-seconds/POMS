@@ -1,0 +1,89 @@
+@model PurchaseOrderManagementSystem.Models.PurchaseRequest
+
+@{
+    ViewData["Title"] = "Procurement Officer - View Purchase Request";
+    Layout = "_Layout";
+
+    Func<string, string> GetStatusColor = status =>
+    {
+        return status switch
+        {
+            "pending" => "bg-yellow-100 text-yellow-800",
+            "reviewed" => "bg-blue-100 text-blue-800",
+            "approved" => "bg-green-100 text-green-800",
+            "denied" => "bg-red-100 text-red-800",
+            _ => "bg-gray-100 text-gray-800"
+        };
+    };
+}
+
+<div class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center py-4">
+                <a href="/ProcurementOfficer"
+                   class="inline-flex items-center bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back to Approved Requests
+                </a>
+                <h1 class="text-2xl font-bold text-gray-900 ml-4">Purchase Request Details</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="bg-white shadow rounded-lg">
+                <div class="border-b px-4 py-3">
+                    <h2 class="text-lg font-semibold text-gray-800">Request Information</h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Item Name</dt>
+                            <dd class="mt-1 text-lg text-gray-900">@Model.existingItem?.ItemName</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Quantity</dt>
+                            <dd class="mt-1 text-lg text-gray-900">@Model.quantity</dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Status</dt>
+                            <dd class="mt-1 text-lg text-gray-900">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium @GetStatusColor(Model.Status.ToString().ToLower())">
+                                    @Model.Status
+                                </span>
+                            </dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Created At</dt>
+                            <dd class="mt-1 text-lg text-gray-900">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+                        </div>
+                        @if (Model.Branch != null)
+                        {
+                            <div class="sm:col-span-1">
+                                <dt class="text-sm font-medium text-gray-500">Branch</dt>
+                                <dd class="mt-1 text-lg text-gray-900">@Model.Branch.BranchName</dd>
+                            </div>
+                        }
+                    </dl>
+                    <div class="mt-6">
+                        <a asp-action="CreateAuction" asp-route-id="@Model.Id"
+                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Create Auction
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

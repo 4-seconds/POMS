@@ -5,7 +5,7 @@ namespace PurchaseOrderManagementSystem.Models.ViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
+        [Display(Name = "Email or Username")]
         public string Email { get; set; }
 
         [Required]
@@ -15,7 +15,6 @@ namespace PurchaseOrderManagementSystem.Models.ViewModels
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
-        public string Username { get; set; }
     }
 }
 

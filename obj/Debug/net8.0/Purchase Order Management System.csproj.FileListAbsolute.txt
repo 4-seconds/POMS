@@ -166,6 +166,7 @@ F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Ubiety.Dns.Core
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Zstandard.Net.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\MySql.Data.EntityFrameworkCore.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\MySqlConnector.dll
+F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Newtonsoft.Json.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\Renci.SshNet.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\SshNet.Security.Cryptography.dll
@@ -240,6 +241,7 @@ F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\runtimes\win\li
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 F:\Local_Repos\Purchase Order Management System\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.csproj.AssemblyReference.cache
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\rpswa.dswa.cache.json
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.GeneratedMSBuildEditorConfig.editorconfig
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.AssemblyInfoInputs.cache
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.AssemblyInfo.cs
@@ -248,6 +250,9 @@ F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order 
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.RazorAssemblyInfo.cache
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.RazorAssemblyInfo.cs
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.sourcelink.json
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\rjimswa.dswa.cache.json
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\scopedcss\bundle\Purchase Order Management System.styles.css
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\scopedcss\projectbundle\Purchase Order Management System.bundle.scp.css
@@ -255,10 +260,10 @@ F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.build.json.cache
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.development.json
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase.743D40C2.Up2Date
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.dll
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\refint\Purchase Order Management System.dll
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.pdb
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\Purchase Order Management System.genruntimeconfig.cache
 F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\ref\Purchase Order Management System.dll
+F:\Local_Repos\Purchase Order Management System\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -1,0 +1,45 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.LoginViewModel
+
+@{
+ViewData["Title"] = "Login";
+Layout = "_Layout"; // Assuming you have a _Layout.cshtml
+}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="w-full max-w-md">
+    <div class="bg-white shadow rounded-lg px-8 py-6">
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">Upper Awash Agro Industry</h1>
+        <p class="text-gray-600">E-Procurement System</p>
+      </div>
+      <form method="post" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" class="space-y-4">
+        <div asp-validation-summary="All" class="text-red-600 text-sm"></div>
+
+        <div>
+          <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+          <input asp-for="Email" type="text" placeholder="Enter your email or username"
+            class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+            required />
+          <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div>
+          <label asp-for="Password" class="block text-sm font-medium text-gray-700"></label>
+          <input asp-for="Password" type="password"
+            class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+            required />
+          <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-medium">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

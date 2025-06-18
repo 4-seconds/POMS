@@ -1,0 +1,44 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.SettingsViewModel
+@{ ViewData["Title"] = "Settings"; }
+
+<h1 class="text-2xl font-bold mb-4">Settings</h1>
+
+<div class="max-w-md">
+    <form asp-action="Settings" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-red-500"></div>
+        <div class="mb-4">
+            <label asp-for="Email" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="Email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled />
+        </div>
+        <div class="mb-4">
+            <label asp-for="PhoneNumber" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="PhoneNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="PhoneNumber" class="text-red-500 text-xs italic"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="OldPassword" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="OldPassword" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="OldPassword" class="text-red-500 text-xs italic"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="NewPassword" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="NewPassword" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="NewPassword" class="text-red-500 text-xs italic"></span>
+        </div>
+        <div class="mb-6">
+            <label asp-for="ConfirmNewPassword" class="block text-gray-700 text-sm font-bold mb-2"></label>
+            <input asp-for="ConfirmNewPassword" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="ConfirmNewPassword" class="text-red-500 text-xs italic"></span>
+        </div>
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Update Settings
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+

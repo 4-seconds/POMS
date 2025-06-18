@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PurchaseOrderManagementSystem.Data;
+using Microsoft.AspNetCore.Authorization;
 using PurchaseOrderManagementSystem.Models;
+using PurchaseOrderManagementSystem.Data;
 using System.Threading.Tasks;
-using static Enum;
+using Microsoft.EntityFrameworkCore;
 
 namespace PurchaseOrderManagementSystem.Controllers
 {
@@ -30,7 +29,7 @@ namespace PurchaseOrderManagementSystem.Controllers
         {
             var request = await _context.PurchaseRequests
                 .Include(pr => pr.existingItem)
-                .FirstOrDefaultAsync(pr => pr.purchaseRequestId == id);
+                .FirstOrDefaultAsync(pr => pr.Id == id);
 
             if (request == null)
             {
@@ -67,7 +66,7 @@ namespace PurchaseOrderManagementSystem.Controllers
             }
 
             request.Status = PurchaseRequestStatus.Rejected;
-            request.remark = comment;
+            request.ReviewedComment = comment;
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

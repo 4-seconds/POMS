@@ -1,0 +1,49 @@
+@model PurchaseOrderManagementSystem.Models.Branch
+
+@{ 
+    ViewData["Title"] = "Create Branch";
+}
+
+<h1>Create Branch</h1>
+
+<h4>Branch</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateBranch">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-4">
+                <label asp-for="BranchName" class="block text-sm font-medium text-gray-700"></label>
+                <input asp-for="BranchName" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="BranchName" class="text-red-600 text-sm"></span>
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="Location" class="block text-sm font-medium text-gray-700"></label>
+                <input asp-for="Location" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="Location" class="text-red-600 text-sm"></span>
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="ContactNumber" class="block text-sm font-medium text-gray-700"></label>
+                <input asp-for="ContactNumber" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="ContactNumber" class="text-red-600 text-sm"></span>
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+                <input asp-for="Email" class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500" />
+                <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Branches">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

@@ -1,58 +1,47 @@
-using PurchaseOrderManagementSystem.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Enum;
 
 namespace PurchaseOrderManagementSystem.Models
 {
     public class Bid : BaseModel
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string BidId { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
         public string SupplierId { get; set; }
 
+        [Required]
         [ForeignKey("SupplierId")]
         public virtual Supplier Supplier { get; set; }
 
         [Required]
-        public string TenderId { get; set; }
-        [ForeignKey("TenderId")]
-        public virtual Tender Tender { get; set; }
+        public string AuctionId { get; set; }
+
+        [Required]
+        [ForeignKey("AuctionId")]
+        public virtual Auction Auction { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal BidAmount { get; set; }
+        public decimal Price { get; set; }
+
+        public DateTime? DeliveredDate { get; set; }
 
         [Required]
-        public string Currency { get; set; } = "Birr";
-
-        [Required]
-        public string PaymentTerms { get; set; } = "Cash on Delivery";
-
-        public string DeliveryLocation { get; set; }
-
-        public string Remarks { get; set; }
-
         public BidStatus Status { get; set; }
 
         [Required]
         public string PurchaseRequestId { get; set; }
 
+        [Required]
         [ForeignKey("PurchaseRequestId")]
         public virtual PurchaseRequest PurchaseRequest { get; set; }
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal UnitPrice { get; set; }
+        public new DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public DateTime? DeliveredDate { get; set; }
-
-        [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public new DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation property for GoodsReceived relationship
         public virtual ICollection<GoodsReceived> GoodsReceived { get; set; } = new HashSet<GoodsReceived>();

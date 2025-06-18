@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PurchaseOrderManagementSystem.Controllers
 {
+    [Authorize(Roles = "Budget")]
     public class BudgetController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,7 +30,7 @@ namespace PurchaseOrderManagementSystem.Controllers
         {
             var request = await _context.PurchaseRequests
                 .Include(pr => pr.existingItem)
-                .FirstOrDefaultAsync(pr => pr.purchaseRequestId == id);
+                .FirstOrDefaultAsync(pr => pr.Id == id);
 
             if (request == null)
             {

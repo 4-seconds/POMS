@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PurchaseOrderManagementSystem.Data;
 using PurchaseOrderManagementSystem.Models;
-using static Enum;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PurchaseOrderManagementSystem.Controllers
 {
+    [Authorize(Roles = "SupplyLogistics")]
     public class SupplyLogisticsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -79,6 +80,7 @@ namespace PurchaseOrderManagementSystem.Controllers
                 .OrderBy(i => i.ItemName)
                 .ToListAsync();
             ViewBag.Items = new SelectList(items, "Id", "ItemName");
+            ViewBag.Branches = new SelectList(await _context.Branches.ToListAsync(), "Id", "BranchName");
             return View();
         }
 
@@ -86,10 +88,14 @@ namespace PurchaseOrderManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRequest(PurchaseRequest request)
         {
-            request.purchaseRequestId = Guid.NewGuid().ToString();
+            request.Id = Guid.NewGuid().ToString();
             request.Status = PurchaseRequestStatus.Pending;
             request.CreatedAt = DateTime.UtcNow;
             request.UpdatedAt = DateTime.UtcNow;
+
+            // Assign the BranchId from the form
+            // The BranchId is already part of the PurchaseRequest model due to previous modifications
+            // No explicit assignment needed here as it will be bound directly from the form.
 
             _context.Add(request);
             await _context.SaveChangesAsync();
@@ -101,7 +107,7 @@ namespace PurchaseOrderManagementSystem.Controllers
         {
             var request = await _context.PurchaseRequests
                 .Include(pr => pr.existingItem)
-                .FirstOrDefaultAsync(pr => pr.purchaseRequestId == id);
+                .FirstOrDefaultAsync(pr => pr.Id == id);
 
             if (request == null)
             {

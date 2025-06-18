@@ -1,0 +1,112 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.SupplierDashboardViewModel
+
+@{
+    ViewData["Title"] = "Supplier Dashboard";
+    Layout = "_Layout";
+}
+
+<div class="min-h-screen bg-gray-100">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Welcome Section -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:p-6">
+                <h1 class="text-2xl font-bold text-gray-900">Welcome, @Model.Supplier.BusinessName</h1>
+                <p class="mt-1 text-sm text-gray-500">Manage your auctions and bids from this dashboard.</p>
+            </div>
+        </div>
+
+        <!-- Active Auctions Section -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Active Auctions</h2>
+                @if (Model.ActiveAuctions.Any())
+                {
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach (var auction in Model.ActiveAuctions)
+                        {
+                            <div class="bg-white border rounded-lg shadow-sm p-4">
+                                <h3 class="text-lg font-medium text-gray-900">@auction.PurchaseRequest?.ItemName</h3>
+                                <p class="text-sm text-gray-500">Quantity: @auction.PurchaseRequest?.Quantity</p>
+                                <p class="text-sm text-gray-500">Ends: @auction.EndDate.ToString("g")</p>
+                                <div class="mt-4">
+                                    <a href="@Url.Action("ViewAuction", new { id = auction.Id })"
+                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-gray-500">No active auctions available.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Your Bids Section -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Your Bids</h2>
+                @if (Model.SupplierBids.Any())
+                {
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Your Bid</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach (var bid in Model.SupplierBids)
+                                {
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            @bid.Auction.PurchaseRequest?.ItemName
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            $@bid.Price.ToString("N2")
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                @(bid.Status == BidStatus.Open ? "bg-green-100 text-green-800" : 
+                                                  bid.Status == BidStatus.Won ? "bg-blue-100 text-blue-800" : 
+                                                  "bg-gray-100 text-gray-800")">
+                                                @bid.Status
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            @bid.CreatedAt.ToString("g")
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="@Url.Action("ViewAuction", new { id = bid.AuctionId })"
+                                                class="text-indigo-600 hover:text-indigo-900">View Auction</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-gray-500">You haven't placed any bids yet.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Transactions Section -->
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Transactions</h2>
+                <p class="text-sm text-gray-500 mb-4">View your payment transactions.</p>
+                <a href="/Supplier/Transactions" class="text-blue-600 hover:text-blue-900 font-medium">View All Transactions &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>

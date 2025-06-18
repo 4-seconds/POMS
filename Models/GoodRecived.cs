@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PurchaseOrderManagementSystem.Models;
-using static Enum;
 
 namespace PurchaseOrderManagementSystem.Models
 {
@@ -34,21 +33,20 @@ namespace PurchaseOrderManagementSystem.Models
         public virtual Bid Bid { get; set; }
 
         [Required]
-        public UOM UOM { get; set; }
-
-        [Required]
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
 
-        [StringLength(500)]
-        public string Remark { get; set; }
+        [Required]
+        public decimal UnitPrice { get; set; }
+
+        [Required]
+        public decimal TotalPrice { get; set; }
+
 
         [Required]
         public string Status { get; set; } = "Received";
 
-        [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        public DateTime? UpdatedAt { get; set; }
+        public new DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public new DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

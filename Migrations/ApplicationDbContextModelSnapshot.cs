@@ -46,14 +46,6 @@ namespace PurchaseOrderManagementSystem.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "15bb9e8f-9934-4ec4-9f30-e5e0a9ffe5ea",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -141,13 +133,6 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "d8a17e37-3489-4a0c-a577-98a185befbda",
-                            RoleId = "15bb9e8f-9934-4ec4-9f30-e5e0a9ffe5ea"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -205,9 +190,8 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Property<int>("AccountStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -224,9 +208,6 @@ namespace PurchaseOrderManagementSystem.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<int?>("Gender")
-                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -259,9 +240,6 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("SupplierId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -271,6 +249,8 @@ namespace PurchaseOrderManagementSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -278,38 +258,50 @@ namespace PurchaseOrderManagementSystem.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.HasIndex("SupplierId");
-
                     b.ToTable("AspNetUsers", (string)null);
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "d8a17e37-3489-4a0c-a577-98a185befbda",
-                            AccessFailedCount = 0,
-                            AccountStatus = 0,
-                            Address = "123 Admin Street",
-                            ConcurrencyStamp = "3b073236-3fb0-49f7-beba-2b494fc26af9",
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Admin",
-                            Gender = 0,
-                            LastName = "User",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@GMAIL.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHEYqipMJpCO1m4FQaRN1KPQ2dKFu3blJPIdWUFmGTFzNhce/P6gFwWrHTo/IbgEgw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "e78697b2-6fed-49c7-8bb2-c0c70b590d9d",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Auction", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DeliveryDeadline")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PurchaseRequestId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseRequestId");
+
+                    b.ToTable("Auctions");
                 });
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Bid", b =>
                 {
-                    b.Property<string>("BidId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AuctionId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -321,25 +313,26 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Property<string>("ItemId")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("PurchaseRequestId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("SupplierId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("BidId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuctionId");
 
                     b.HasIndex("ItemId");
 
@@ -348,6 +341,43 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Bids");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Branch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("BranchName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.GoodsReceived", b =>
@@ -380,19 +410,17 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Property<DateTime>("ReceivedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Remark")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UOM")
-                        .HasColumnType("int");
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(65,30)");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -410,53 +438,31 @@ namespace PurchaseOrderManagementSystem.Migrations
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Item", b =>
                 {
-                    b.Property<string>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("CategoryId")
-                        .IsRequired()
+                    b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("CurrentStock")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("ItemName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("UOM")
-                        .HasColumnType("int");
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("ItemId");
-
-                    b.HasIndex("CategoryId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ItemName")
                         .IsUnique();
@@ -464,101 +470,169 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.Category", b =>
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.PaymentTransfer", b =>
                 {
-                    b.Property<string>("CategoryId")
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("AccountName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("BankCode")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Currency")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("InitiatedById")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("PurchaseOrderId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("CategoryName")
-                        .IsUnique();
+                    b.HasIndex("InitiatedById");
 
-                    b.ToTable("Categories");
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.ToTable("PaymentTransfers");
                 });
 
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.PurchaseRequestOrder", b =>
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.PurchaseOrder", b =>
                 {
-                    b.Property<string>("purchaseRequestId")
+                    b.Property<string>("OrderId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("BidId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("OrderedBy")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Item")
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestId")
                         .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<float>("UnitPrice")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("BidId");
+
+                    b.HasIndex("OrderedBy");
+
+                    b.HasIndex("RequestId");
+
+                    b.ToTable("PurchaseOrders");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.PurchaseRequest", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("BudgetComment")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ItemDescription")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<string>("ReviewdComment")
+                    b.Property<string>("ExistingItemId")
                         .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ReviewedComment")
                         .HasColumnType("longtext");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Unit")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("existingItem")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("existingItems")
-                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("remark")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.HasKey("Id");
 
-                    b.Property<string>("reviwed_by")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.HasIndex("BranchId");
 
-                    b.HasKey("purchaseRequestId");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("existingItems");
-
-                    b.HasIndex("reviwed_by");
+                    b.HasIndex("ExistingItemId");
 
                     b.ToTable("PurchaseRequests");
                 });
 
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.Supplier", b =>
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Supplier", b =>
                 {
-                    b.Property<string>("SupplierID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Address")
@@ -571,31 +645,91 @@ namespace PurchaseOrderManagementSystem.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ContactPerson")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PaymentMethod1")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("PaymentMethod1BankId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentMethod2")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int?>("PaymentMethod2BankId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("varchar(15)");
 
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("TinNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
+                    b.Property<string>("TinNumberFilePath")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("TradeLicenseFilePath")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("SupplierID");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.SupplierBranch", b =>
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.SupplierBranch", b =>
                 {
                     b.Property<string>("BranchId")
                         .ValueGeneratedOnAdd()
@@ -688,30 +822,49 @@ namespace PurchaseOrderManagementSystem.Migrations
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Purchase_Order_Management_System.Models.Supplier", "Supplier")
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("SupplierId");
+                        .HasForeignKey("BranchId");
 
-                    b.Navigation("Supplier");
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Auction", b =>
+                {
+                    b.HasOne("PurchaseOrderManagementSystem.Models.PurchaseRequest", "PurchaseRequest")
+                        .WithMany()
+                        .HasForeignKey("PurchaseRequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PurchaseRequest");
                 });
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Bid", b =>
                 {
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Auction", "Auction")
+                        .WithMany("Bids")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PurchaseOrderManagementSystem.Models.Item", null)
                         .WithMany("Bids")
                         .HasForeignKey("ItemId");
 
-                    b.HasOne("Purchase_Order_Management_System.Models.PurchaseRequestOrder", "PurchaseRequest")
+                    b.HasOne("PurchaseOrderManagementSystem.Models.PurchaseRequest", "PurchaseRequest")
                         .WithMany()
                         .HasForeignKey("PurchaseRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Purchase_Order_Management_System.Models.Supplier", "Supplier")
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Supplier", "Supplier")
                         .WithMany("Bids")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Auction");
 
                     b.Navigation("PurchaseRequest");
 
@@ -730,7 +883,7 @@ namespace PurchaseOrderManagementSystem.Migrations
                         .WithMany("GoodsReceived")
                         .HasForeignKey("ItemId");
 
-                    b.HasOne("Purchase_Order_Management_System.Models.PurchaseRequestOrder", "PurchaseRequest")
+                    b.HasOne("PurchaseOrderManagementSystem.Models.PurchaseRequest", "PurchaseRequest")
                         .WithMany()
                         .HasForeignKey("PurchaseRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -749,51 +902,94 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Navigation("ReceivedBy");
                 });
 
-            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Item", b =>
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.PaymentTransfer", b =>
                 {
-                    b.HasOne("Purchase_Order_Management_System.Models.Category", "Category")
-                        .WithMany("Items")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.PurchaseRequestOrder", b =>
-                {
-                    b.HasOne("PurchaseOrderManagementSystem.Models.ApplicationUser", "User")
+                    b.HasOne("PurchaseOrderManagementSystem.Models.ApplicationUser", "InitiatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedBy")
+                        .HasForeignKey("InitiatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PurchaseOrderManagementSystem.Models.Item", "existintItem")
-                        .WithMany("PurchaseRequests")
-                        .HasForeignKey("existingItems");
-
-                    b.HasOne("PurchaseOrderManagementSystem.Models.ApplicationUser", "reviewd_by")
+                    b.HasOne("PurchaseOrderManagementSystem.Models.PurchaseOrder", "PurchaseOrder")
                         .WithMany()
-                        .HasForeignKey("reviwed_by")
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InitiatedBy");
+
+                    b.Navigation("PurchaseOrder");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.PurchaseOrder", b =>
+                {
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Bid", "Bid")
+                        .WithMany()
+                        .HasForeignKey("BidId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PurchaseOrderManagementSystem.Models.ApplicationUser", "OrderedByUser")
+                        .WithMany()
+                        .HasForeignKey("OrderedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PurchaseOrderManagementSystem.Models.PurchaseRequest", "PurchaseRequest")
+                        .WithMany()
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Bid");
+
+                    b.Navigation("OrderedByUser");
+
+                    b.Navigation("PurchaseRequest");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.PurchaseRequest", b =>
+                {
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId");
+
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Item", "existingItem")
+                        .WithMany("PurchaseRequests")
+                        .HasForeignKey("ExistingItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("existingItem");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Supplier", b =>
+                {
+                    b.HasOne("PurchaseOrderManagementSystem.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-
-                    b.Navigation("existintItem");
-
-                    b.Navigation("reviewd_by");
                 });
 
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.SupplierBranch", b =>
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.SupplierBranch", b =>
                 {
-                    b.HasOne("Purchase_Order_Management_System.Models.Supplier", "Supplier")
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Supplier", "Supplier")
                         .WithMany("Branches")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Auction", b =>
+                {
+                    b.Navigation("Bids");
                 });
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Bid", b =>
@@ -810,12 +1006,7 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Navigation("PurchaseRequests");
                 });
 
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.Category", b =>
-                {
-                    b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("Purchase_Order_Management_System.Models.Supplier", b =>
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Supplier", b =>
                 {
                     b.Navigation("Bids");
 

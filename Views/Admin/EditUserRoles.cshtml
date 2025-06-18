@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Identity
+@model dynamic
+
+@{
+    ViewData["Title"] = "Edit User Roles";
+    var user = ViewBag.User as ApplicationUser;
+    var userRoles = ViewBag.UserRoles as IList<string>;
+    var allRoles = ViewBag.AllRoles as string[];
+}
+
+<h1 class="text-2xl font-bold mb-6">Edit Roles for @user.UserName</h1>
+
+<div class="bg-white shadow-md rounded-lg p-6">
+    <form asp-action="EditUserRoles" method="post">
+        <input type="hidden" name="id" value="@user.Id" />
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                Select Roles:
+            </label>
+            @foreach (var role in allRoles)
+            {
+                <div class="flex items-center mb-2">
+                    <input type="radio"
+                           name="selectedRole"
+                           value="@role"
+                           @(userRoles.Contains(role) ? "checked" : "")
+                           class="form-radio h-5 w-5 text-indigo-600">
+                    <label class="ml-2 text-gray-700">@role</label>
+                </div>
+            }
+        </div>
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Update Roles
+            </button>
+            <a asp-action="ManageUsers" class="inline-block align-baseline font-bold text-sm text-indigo-600 hover:text-indigo-800">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+

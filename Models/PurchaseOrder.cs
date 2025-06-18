@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PurchaseOrderManagementSystem.Models;
-
 namespace PurchaseOrderManagementSystem.Models
 {
     public class PurchaseOrder : BaseModel
@@ -11,7 +10,7 @@ namespace PurchaseOrderManagementSystem.Models
 
         public string RequestId { get; set; }
         [ForeignKey("RequestId")]
-        public PurchaseOrder purchaseOrder { get; set; }
+        public PurchaseRequest PurchaseRequest { get; set; }
 
         public string BidId { get; set; }
 
@@ -22,14 +21,9 @@ namespace PurchaseOrderManagementSystem.Models
         public DateTime OrderDate { get; set; }
 
         public string OrderedBy { get; set; }
-
         [ForeignKey("OrderedBy")]
+        public ApplicationUser OrderedByUser { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
-        public string RequestedBy { get; set; }
-
-        [ForeignKey("RequestedBy")]
-        public ApplicationUser Requested_by { get; set; }
 
         [StringLength(50)]
         public string Unit { get; set; }
@@ -40,7 +34,7 @@ namespace PurchaseOrderManagementSystem.Models
 
         public float TotalPrice { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public new DateTime CreatedAt { get; set; }
 
         [StringLength(50)]
         public string Status { get; set; }

@@ -1,0 +1,220 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.SupplierRegisterViewModel
+
+@{
+ViewData["Title"] = "Supplier Registration";
+Layout = "_Layout";
+}
+
+<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Register as a Supplier
+    </h2>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <form asp-action="SupplierRegister" method="post" enctype="multipart/form-data" class="space-y-6">
+        <div asp-validation-summary="All" class="text-red-600"></div>
+
+        <div>
+          <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="Email"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="Password" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="Password"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="ConfirmPassword" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="ConfirmPassword"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="ConfirmPassword" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="BusinessName" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="BusinessName"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="BusinessName" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="Street" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="Street"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="Street" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="City" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="City"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="City" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="State" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="State"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="State" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="Country" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="Country"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="Country" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="BusinessPhoneNumber" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="BusinessPhoneNumber"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="BusinessPhoneNumber" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="ContactPersonName" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="ContactPersonName"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="ContactPersonName" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="ContactPersonPhoneNumber" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="ContactPersonPhoneNumber"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="ContactPersonPhoneNumber" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="TinNumber" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="TinNumber"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="TinNumber" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="TradeLicenseFile" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="TradeLicenseFile" type="file"
+              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+            <span asp-validation-for="TradeLicenseFile" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="TinNumberFile" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="TinNumberFile" type="file"
+              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+            <span asp-validation-for="TinNumberFile" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+
+        <div>
+          <label asp-for="PaymentMethod1BankId" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <select asp-for="PaymentMethod1BankId" asp-items='new SelectList(ViewBag.Banks, "id", "name")'
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <option value="">-- Select Provider --</option>
+            </select>
+            <span asp-validation-for="PaymentMethod1BankId" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="PaymentMethod1" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="PaymentMethod1"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="PaymentMethod1" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+
+        <div>
+          <label asp-for="PaymentMethod2BankId" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <select asp-for="PaymentMethod2BankId" asp-items='new SelectList(ViewBag.Banks, "id", "name")'
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <option value="">-- Select Bank --</option>
+            </select>
+            <span asp-validation-for="PaymentMethod2BankId" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <label asp-for="PaymentMethod2" class="block text-sm font-medium text-gray-700"></label>
+          <div class="mt-1">
+            <input asp-for="PaymentMethod2"
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            <span asp-validation-for="PaymentMethod2" class="text-red-600 text-sm"></span>
+          </div>
+        </div>
+        <div>
+          <button type="submit"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Register
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">
+              Or
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <a href="/Account/Login"
+            class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            Already have an account? Sign in
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

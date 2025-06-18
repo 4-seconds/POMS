@@ -17,8 +17,6 @@ namespace PurchaseOrderManagementSystem.Models
 
         [Required]
         public string SupplierId { get; set; }
-        
-        //navigation property
 
         [ForeignKey("SupplierId")]
         public virtual Supplier Supplier { get; set; }

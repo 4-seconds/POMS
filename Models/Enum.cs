@@ -1,4 +1,4 @@
-public class Enum
+namespace PurchaseOrderManagementSystem.Models
 {
     public enum Gender
     {
@@ -7,42 +7,50 @@ public class Enum
     }
     public enum SupplierStatus
     {
+        Pending,
         Active,
         Inactive,
-
+        Suspended
     }
     public enum PurchaseRequestStatus
     {
         Pending,
         Approved,
         Rejected,
+        AuctionCreated,
+        PendingBudgetReview,
+        Denied
     }
+    /// <summary>
+    /// Defines the possible statuses for a user account.
+    /// </summary>
     public enum AccountStatus
     {
-        Pending,
+        /// <summary>
+        /// The account is active and can be used.
+        /// </summary>
         Active,
-        Inactive
+        /// <summary>
+        /// The account is inactive and cannot be used.
+        /// </summary>
+        Inactive,
+        /// <summary>
+        /// The account is pending approval or activation.
+        /// </summary>
+        Pending
     }
-
-    public enum UOM
-    {
-        KG,
-        Litter,
-        Meter
-    }
-
-    public enum TenderStatus
-    {
-        Open,
-        Closed,
-        Cancelled
-    }
-
     public enum BidStatus
     {
         Open,
         Closed,
-        Awarded,
-        Rejected
+        Won,
+        Lost
+    }
+
+    public enum AuctionStatus
+    {
+        Open,
+        Closed,
+        Cancelled
     }
 }

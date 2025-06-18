@@ -1,56 +1,50 @@
-﻿using PurchaseOrderManagementSystem.Models;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Enum;
 
 namespace PurchaseOrderManagementSystem.Models
 {
     public class PurchaseRequest : BaseModel
     {
         [Key]
-        public string purchaseRequestId { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string CreatedBy { get; set; }
-
-        [ForeignKey("CreatedBy")]
-        public ApplicationUser User { get; set; }
-
-
-
+        [ForeignKey("existingItem")]
         public string ExistingItemId { get; set; }
 
-        [ForeignKey("existingItemId")]
+        [Required]
         public virtual Item existingItem { get; set; }
-
-        [Required]
-        public string Item { get; set; }
-
-        [Required]
-        public string ItemDescription { get; set; }
-
-        [Required]
-        public UOM Unit { get; set; }
 
         [Required]
         public int quantity { get; set; }
 
-        [Required]
-        public string remark { get; set; }
+        public string? ReviewedComment { get; set; }
 
-        [Required]
-        public string reviwed_by { get; set; }
-
-        [ForeignKey("reviwed_by")]
-        public ApplicationUser reviewd_by { get; set; }
-
-        [Required]
-        public string BudgetComment { get; set; }
+        public string? BudgetComment { get; set; }
 
         [Required]
         public PurchaseRequestStatus Status { get; set; }
 
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        // Properties for the view
+        public string ItemName => existingItem?.ItemName ?? "N/A";
+        public int Quantity => quantity;
+
+        /// <summary>
+        /// Gets or sets the ID of the branch associated with the purchase request.
+        /// This is a foreign key to the Branch model.
+        /// </summary>
+        [ForeignKey("Branch")]
+        public Guid? BranchId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the navigation property to the Branch associated with the purchase request.
+        /// </summary>
+        public Branch? Branch { get; set; }
     }
 }
