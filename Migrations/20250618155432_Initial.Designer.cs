@@ -12,8 +12,8 @@ using PurchaseOrderManagementSystem.Data;
 namespace PurchaseOrderManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250616195750_CheckAlignment3")]
-    partial class CheckAlignment3
+    [Migration("20250618155432_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,6 +193,9 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Property<int>("AccountStatus")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
@@ -248,6 +251,8 @@ namespace PurchaseOrderManagementSystem.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -339,6 +344,43 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Bids");
+                });
+
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Branch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("BranchName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.GoodsReceived", b =>
@@ -557,6 +599,9 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("BudgetComment")
                         .HasColumnType("longtext");
 
@@ -580,6 +625,8 @@ namespace PurchaseOrderManagementSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.HasIndex("ExistingItemId");
 
@@ -776,6 +823,15 @@ namespace PurchaseOrderManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PurchaseOrderManagementSystem.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId");
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.Auction", b =>
                 {
                     b.HasOne("PurchaseOrderManagementSystem.Models.PurchaseRequest", "PurchaseRequest")
@@ -897,11 +953,17 @@ namespace PurchaseOrderManagementSystem.Migrations
 
             modelBuilder.Entity("PurchaseOrderManagementSystem.Models.PurchaseRequest", b =>
                 {
+                    b.HasOne("PurchaseOrderManagementSystem.Models.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId");
+
                     b.HasOne("PurchaseOrderManagementSystem.Models.Item", "existingItem")
                         .WithMany("PurchaseRequests")
                         .HasForeignKey("ExistingItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Branch");
 
                     b.Navigation("existingItem");
                 });
