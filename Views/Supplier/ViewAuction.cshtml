@@ -49,14 +49,35 @@
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Status</dt>
                             <dd class="mt-1">
-                                <span class="@(Model.Auction.Status == AuctionStatus.Open ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800") inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                                    @Model.Auction.Status
-                                </span>
+                                @if (Model.Auction.EndDate < DateTime.UtcNow && Model.Auction.Status == AuctionStatus.Open)
+                                {
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        Overdue
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="@(Model.Auction.Status == AuctionStatus.Open ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800") inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                                        @Model.Auction.Status
+                                    </span>
+                                }
                             </dd>
                         </div>
                     </dl>
 
-                    @if (Model.Auction.Status == AuctionStatus.Open && Model.Auction.EndDate > DateTime.UtcNow)
+                    @if (Model.SupplierBid != null)
+                    {
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Your Bid</h3>
+                            <div class="bg-gray-50 p-4 rounded-md">
+                                <p class="text-lg text-gray-900">You have already placed a bid for this auction.</p>
+                                <p class="text-2xl font-bold text-blue-600 mt-2">$@Model.SupplierBid.Price.ToString("F2")</p>
+                                <p class="text-sm text-gray-500 mt-1">Bid placed on: @Model.SupplierBid.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.SupplierBid == null && Model.Auction.Status == AuctionStatus.Open && Model.Auction.EndDate > DateTime.UtcNow)
                     {
                         <div class="mt-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-2">Place Your Bid</h3>
@@ -81,45 +102,6 @@
                         </div>
                     }
 
-                    <div class="mt-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Bid History</h3>
-                        @if (Model.Auction.Bids.Any())
-                        {
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bid Amount</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        @foreach (var bid in Model.Auction.Bids.OrderByDescending(b => b.Price))
-                                        {
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    @bid.Supplier?.BusinessName
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$@bid.Price.ToString("F2")</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="@(bid.Status == BidStatus.Won ? "bg-green-100 text-green-800" : bid.Status == BidStatus.Lost ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-800") inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                                                        @bid.Status
-                                                    </span>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">@bid.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
-                        else
-                        {
-                            <p class="text-gray-500 text-center py-4">No bids have been placed yet.</p>
-                        }
-                    </div>
                 </div>
             </div>
         </div>

@@ -37,7 +37,15 @@ namespace PurchaseOrderManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(request);
+            // Fetch GoodsReceived records for the current item
+            var goodsReceivedRecords = await _context.GoodsReceived
+                .Include(gr => gr.PurchaseRequest)
+                .ThenInclude(pr => pr.existingItem)
+                .Where(gr => gr.PurchaseRequest.ExistingItemId == request.ExistingItemId)
+                .OrderByDescending(gr => gr.ReceivedDate)
+                .ToListAsync();
+
+            return View((request, goodsReceivedRecords));
         }
 
         [HttpPost]

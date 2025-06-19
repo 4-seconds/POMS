@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using PurchaseOrderManagementSystem.Data;
 using PurchaseOrderManagementSystem.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,12 @@ namespace PurchaseOrderManagementSystem.Controllers
     public class SupplyLogisticsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public SupplyLogisticsController(ApplicationDbContext context)
+        public SupplyLogisticsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // Items Management
@@ -67,8 +70,15 @@ namespace PurchaseOrderManagementSystem.Controllers
         // Purchase Requests
         public async Task<IActionResult> Requests()
         {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Unauthorized();
+            }
+
             var requests = await _context.PurchaseRequests
                 .Include(pr => pr.existingItem)
+                .Where(pr => pr.CreatedByUserId == currentUser.Id)
                 .OrderByDescending(pr => pr.CreatedAt)
                 .ToListAsync();
             return View(requests);
@@ -88,14 +98,39 @@ namespace PurchaseOrderManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRequest(PurchaseRequest request)
         {
+            // Inline item creation logic
+            var newItemName = Request.Form["NewItemName"].ToString();
+            var newItemDescription = Request.Form["NewItemDescription"].ToString();
+            var newItemUnit = Request.Form["NewItemUnit"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(newItemName) && !string.IsNullOrWhiteSpace(newItemUnit))
+            {
+                var newItem = new Item
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ItemName = newItemName,
+                    Description = newItemDescription,
+                    Unit = newItemUnit,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                _context.Items.Add(newItem);
+                await _context.SaveChangesAsync();
+                request.ExistingItemId = newItem.Id;
+            }
+
             request.Id = Guid.NewGuid().ToString();
             request.Status = PurchaseRequestStatus.Pending;
             request.CreatedAt = DateTime.UtcNow;
             request.UpdatedAt = DateTime.UtcNow;
 
-            // Assign the BranchId from the form
-            // The BranchId is already part of the PurchaseRequest model due to previous modifications
-            // No explicit assignment needed here as it will be bound directly from the form.
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Unauthorized();
+            }
+            request.BranchId = currentUser.BranchId;
+            request.CreatedByUserId = currentUser.Id;
 
             _context.Add(request);
             await _context.SaveChangesAsync();

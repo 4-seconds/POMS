@@ -1,47 +1,44 @@
-@model IEnumerable<PurchaseOrderManagementSystem.Models.Bid>
+@model IEnumerable<PurchaseOrderManagementSystem.Models.Auction>
 
 @{
-    ViewData["Title"] = "Procurement Officer - Manage Bids";
+    ViewData["Title"] = "Procurement Officer - Archived Auctions";
     Layout = "_Layout";
-    var auction = ViewBag.Auction as PurchaseOrderManagementSystem.Models.Auction;
 
-    Func<string, string> GetBidStatusColor = status =>
+    Func<string, string> GetAuctionStatusColor = status =>
     {
         return status switch
         {
             "open" => "bg-green-100 text-green-800",
             "closed" => "bg-red-100 text-red-800",
-            "won" => "bg-blue-100 text-blue-800",
-            "lost" => "bg-yellow-100 text-yellow-800",
+            "cancelled" => "bg-gray-100 text-gray-800",
             _ => "bg-gray-100 text-gray-800"
         };
     };
 }
 
 <div class="min-h-screen bg-gray-50">
-    <header class="bg-white shadow-sm border-b">
+    <header class="">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center py-4">
-                <a href="/ProcurementOfficer/ViewAuction/@auction?.Id"
-                   class="inline-flex items-center bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-3 rounded text-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+            <div class="flex items-center py-3 ">
+                <a href="/ProcurementOfficer"
+                    class="inline-flex items-center text-blue-500 bg-transparent hover:bg-gray-200 text-gray-800 font-semibold py-2 px-2 rounded text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
-                    Back to Auction Details
                 </a>
-                <h1 class="text-2xl font-bold text-gray-900 ml-4">Manage Bids for @auction?.PurchaseRequest?.existingItem?.ItemName</h1>
+                <h1 class="text-2xl font-bold text-gray-900 ml-4">Archived Auctions</h1>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <main class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="px-4 py-6 sm:px-0">
             <div class="bg-white shadow rounded-lg">
                 <div class="border-b px-4 py-3">
-                    <h2 class="text-lg font-semibold text-gray-800">Submitted Bids</h2>
+                    <h2 class="text-lg font-semibold text-gray-800">Available Auctions</h2>
                 </div>
-                <div class="p-6">
+                <div class="">
                     @if (Model != null && Model.Any())
                     {
                         <div class="overflow-x-auto">
@@ -50,19 +47,19 @@
                                     <tr>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Supplier
+                                            Item Name
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Price
+                                            Quantity
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            End Date
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Status
-                                        </th>
-                                        <th scope="col"
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Bid Date
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -71,41 +68,28 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach (var bid in Model.OrderBy(b => b.Price))
+                                    @foreach (var auction in Model.OrderByDescending(a => a.CreatedAt))
                                     {
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                @bid.Supplier?.BusinessName
+                                                @auction.PurchaseRequest?.existingItem?.ItemName
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                @bid.Price.ToString("C")
+                                                @auction.PurchaseRequest?.quantity
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <span class="text-gray-500">End Date:</span>
+                                                <span class="text-gray-900">@auction.EndDate.ToString("yyyy-MM-dd HH:mm")</span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium @GetBidStatusColor(bid.Status.ToString().ToLower())">
-                                                    @bid.Status
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium @GetAuctionStatusColor(auction.Status.ToString().ToLower())">
+                                                    @auction.Status
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                @bid.CreatedAt.ToString("yyyy-MM-dd HH:mm")
-                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                @if (auction.Status == PurchaseOrderManagementSystem.Models.AuctionStatus.Open)
-                                                {
-                                                    <form asp-action="SelectWinningBid" method="post" class="inline">
-                                                        <input type="hidden" name="auctionId" value="@auction.Id" />
-                                                        <input type="hidden" name="bidId" value="@bid.Id" />
-                                                        <button type="submit"
-                                                                class="text-blue-600 hover:text-blue-900"
-                                                                onclick="return confirm('Are you sure you want to select this bid as the winning bid?');">
-                                                            Select as Winning Bid
-                                                        </button>
-                                                    </form>
-                                                }
-                                                else if (bid.Status == PurchaseOrderManagementSystem.Models.BidStatus.Won)
-                                                {
-                                                    <span class="text-green-600">Winning Bid</span>
-                                                }
+                                                <a asp-action="ViewAuction" asp-route-id="@auction.Id"
+                                                    class="text-blue-600 hover:text-blue-900">View Details</a>
                                             </td>
                                         </tr>
                                     }
@@ -115,7 +99,7 @@
                     }
                     else
                     {
-                        <p class="text-gray-500">No bids have been submitted for this auction yet.</p>
+                        <p class="text-gray-500">No auctions found.</p>
                     }
                 </div>
             </div>

@@ -24,6 +24,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[F:/Local_Repos/Purchase Order Management System/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Local_Repos/Purchase Order Management System/Views/Account/ForgotPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZENvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/Local_Repos/Purchase Order Management System/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -38,6 +46,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/Local_Repos/Purchase Order Management System/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Local_Repos/Purchase Order Management System/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Local_Repos/Purchase Order Management System/Views/Account/ResetPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkQ29uZmlybWF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Local_Repos/Purchase Order Management System/Views/Account/SupplierRegister.cshtml]
@@ -58,6 +74,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/Local_Repos/Purchase Order Management System/Views/Admin/EditBranch.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdEJyYW5jaC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Local_Repos/Purchase Order Management System/Views/Admin/EditUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFVzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Local_Repos/Purchase Order Management System/Views/Admin/EditUserRoles.cshtml]
@@ -108,12 +128,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/AllAuctions.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvY3VyZW1lbnRPZmZpY2VyXEFsbEF1Y3Rpb25zLmNzaHRtbA==
+[F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/ActiveAuctions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvY3VyZW1lbnRPZmZpY2VyXEFjdGl2ZUF1Y3Rpb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/ApprovedPurchaseRequests.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvY3VyZW1lbnRPZmZpY2VyXEFwcHJvdmVkUHVyY2hhc2VSZXF1ZXN0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/ArchivedAuctions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvY3VyZW1lbnRPZmZpY2VyXEFyY2hpdmVkQXVjdGlvbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/CreateAuction.cshtml]
@@ -126,10 +150,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvY3VyZW1lbnRPZmZpY2VyXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/ManageBids.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvY3VyZW1lbnRPZmZpY2VyXE1hbmFnZUJpZHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Local_Repos/Purchase Order Management System/Views/ProcurementOfficer/MyPurchaseOrders.cshtml]
@@ -198,6 +218,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/Local_Repos/Purchase Order Management System/Views/Supplier/MyPurchaseOrders.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJcTXlQdXJjaGFzZU9yZGVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Local_Repos/Purchase Order Management System/Views/Supplier/Settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJcU2V0dGluZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Local_Repos/Purchase Order Management System/Views/Supplier/Transactions.cshtml]

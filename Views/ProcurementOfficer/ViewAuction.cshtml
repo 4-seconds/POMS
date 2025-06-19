@@ -62,6 +62,10 @@
                     <dd class="mt-1 text-lg text-gray-900">@Model.Auction.PurchaseRequest?.quantity</dd>
                   </div>
                   <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Branch</dt>
+                    <dd class="mt-1 text-lg text-gray-900">@Model.Auction.PurchaseRequest?.Branch?.BranchName</dd>
+                  </div>
+                  <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">Auction End Date</dt>
                     <dd class="mt-1 text-lg text-gray-900">@Model.Auction.EndDate.ToString("yyyy-MM-dd HH:mm")
                     </dd>
@@ -77,8 +81,7 @@
                   </div>
                 </dl>
 
-                @if (Model.Auction.Status == PurchaseOrderManagementSystem.Models.AuctionStatus.Closed ||
-                Model.Auction.Status == PurchaseOrderManagementSystem.Models.AuctionStatus.Cancelled)
+                @if (Model.Auction.Status == PurchaseOrderManagementSystem.Models.AuctionStatus.Closed )
                 {
                 <div class="mt-6 p-4 bg-gray-100 rounded-md text-gray-700">
                   This auction is @Model.Auction.Status.ToString().ToLower().
@@ -91,14 +94,13 @@
                 </div>
                 }
                 <div class="mt-6 flex justify-end space-x-3">
+                  @if (Model.Auction.Status == PurchaseOrderManagementSystem.Models.AuctionStatus.Open)
+                  {
                   <a asp-action="EditAuctionDeadlines" asp-route-id="@Model.Auction.Id"
                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Edit Deadlines
                   </a>
-                  <a asp-action="ManageBids" asp-route-id="@Model.Auction.Id"
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Manage Bids
-                  </a>
+                  }
                 </div>
               </div>
             </div>
@@ -130,6 +132,10 @@
                           class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Bid Date
                         </th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -150,6 +156,23 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           @bid.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          @if (Model.Auction.Status == PurchaseOrderManagementSystem.Models.AuctionStatus.Open)
+                          {
+                          <form asp-action="SelectWinningBid" method="post" class="inline">
+                            <input type="hidden" name="auctionId" value="@Model.Auction.Id" />
+                            <input type="hidden" name="bidId" value="@bid.Id" />
+                            <button type="submit" class="text-blue-600 hover:text-blue-900"
+                              onclick="return confirm('Are you sure you want to select this bid as the winning bid?');">
+                              Select as Winning Bid
+                            </button>
+                          </form>
+                          }
+                          else if (bid.Status == PurchaseOrderManagementSystem.Models.BidStatus.Won)
+                          {
+                          <span class="text-green-600">Winning Bid</span>
+                          }
                         </td>
                       </tr>
                       }

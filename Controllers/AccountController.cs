@@ -18,6 +18,7 @@ namespace PurchaseOrderManagementSystem.Controllers
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly ApplicationDbContext _context; // Added
         private readonly ILogger<AccountController> _logger;
+        private readonly IEmailSender _emailSender;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -25,7 +26,8 @@ namespace PurchaseOrderManagementSystem.Controllers
             JwtService jwtService,
             IWebHostEnvironment hostEnvironment,
             ApplicationDbContext context,
-            ILogger<AccountController> logger) // Added logger
+            ILogger<AccountController> logger,
+            IEmailSender emailSender) // Added logger
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,6 +35,7 @@ namespace PurchaseOrderManagementSystem.Controllers
             _hostEnvironment = hostEnvironment;
             _context = context; // Initialize context
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -44,7 +47,7 @@ namespace PurchaseOrderManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (!ModelState.IsValid)
@@ -83,7 +86,7 @@ namespace PurchaseOrderManagementSystem.Controllers
             _logger.LogInformation($"User {user.Email} logged in with roles: {string.Join(", ", roles)}");
 
             // Check if this is the first login and password needs to be changed
-            if (user.AccountStatus == AccountStatus.Pending)
+            if (user.PasswordResetRequired)
             {
                 // Store the user ID in TempData to use in the password change page
                 TempData["UserId"] = user.Id;
@@ -133,6 +136,92 @@ namespace PurchaseOrderManagementSystem.Controllers
         }
 
         [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                ModelState.AddModelError(string.Empty, "User not found or email not confirmed.");
+                return View(model);
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            Console.WriteLine("======for reset password");
+            Console.WriteLine(code);
+            var callbackUrl = Url.Action(
+                "ResetPassword",
+                "Account",
+                new { userId = user.Id, code = code },
+                protocol: HttpContext.Request.Scheme);
+
+            await _emailSender.SendEmailAsync(
+                model.Email,
+                "Reset Password",
+                $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+
+            return RedirectToAction(nameof(ForgotPasswordConfirmation));
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string? code = null)
+        {
+            return code == null ? View("Error") : View(new ResetPasswordViewModel { Code = code });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult ChangePassword()
         {
             var userId = TempData["UserId"]?.ToString();
@@ -173,7 +262,7 @@ namespace PurchaseOrderManagementSystem.Controllers
             if (result.Succeeded)
             {
                 // Update account status to Active
-                user.AccountStatus = AccountStatus.Active;
+                user.PasswordResetRequired = false;
                 await _userManager.UpdateAsync(user);
 
                 // Sign in the user

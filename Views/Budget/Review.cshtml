@@ -1,4 +1,4 @@
-@model PurchaseOrderManagementSystem.Models.PurchaseRequest
+@model (PurchaseOrderManagementSystem.Models.PurchaseRequest PurchaseRequest, List<PurchaseOrderManagementSystem.Models.GoodsReceived> GoodsReceivedRecords)
 
 @{
 ViewData["Title"] = "Budget Review Purchase Request";
@@ -32,36 +32,37 @@ Layout = "_Layout";
           <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
             <div class="sm:col-span-1">
               <dt class="text-sm font-medium text-gray-500">Item Name</dt>
-              <dd class="mt-1 text-lg text-gray-900">@Model.existingItem?.ItemName</dd>
+              <dd class="mt-1 text-lg text-gray-900">@Model.PurchaseRequest.existingItem?.ItemName</dd>
             </div>
             <div class="sm:col-span-1">
               <dt class="text-sm font-medium text-gray-500">Quantity</dt>
-              <dd class="mt-1 text-lg text-gray-900">@Model.quantity</dd>
+              <dd class="mt-1 text-lg text-gray-900">@Model.PurchaseRequest.quantity</dd>
             </div>
             <div class="sm:col-span-1">
               <dt class="text-sm font-medium text-gray-500">Status</dt>
               <dd class="mt-1 text-lg text-gray-900">
                 <span
                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                  @Model.Status
+                  @Model.PurchaseRequest.Status
                 </span>
               </dd>
             </div>
             <div class="sm:col-span-1">
               <dt class="text-sm font-medium text-gray-500">Created At</dt>
-              <dd class="mt-1 text-lg text-gray-900">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+              <dd class="mt-1 text-lg text-gray-900">@Model.PurchaseRequest.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
             </div>
           </dl>
+
 
           <div class="mt-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-2">Add Budget Comment</h3>
             <form asp-action="AddComment" method="post" class="space-y-4">
-              <input type="hidden" asp-for="Id" />
+              <input type="hidden" name="id" asp-for="@Model.PurchaseRequest.Id" />
               <div>
                 <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
                 <textarea id="comment" name="comment" rows="4"
                   class="mt-1 px-3 py-1 border block w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-                  required>@Model.BudgetComment</textarea>
+                  required>@Model.PurchaseRequest.BudgetComment</textarea>
               </div>
               <button type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm font-medium">
@@ -71,6 +72,64 @@ Layout = "_Layout";
           </div>
         </div>
       </div>
+
+          <div class="mt-8 bg-white shadow rounded-lg">
+            <div class="border-b px-4 py-3">
+              <h2 class="text-lg font-semibold text-gray-800">Previous Purchase Prices</h2>
+            </div>
+            <div class="p-6">
+              @if (Model.GoodsReceivedRecords != null && Model.GoodsReceivedRecords.Any())
+              {
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Received Date
+                        </th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Quantity
+                        </th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Unit Price
+                        </th>
+                        <th scope="col"
+                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Total Price
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      @foreach (var record in Model.GoodsReceivedRecords)
+                      {
+                        <tr>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            @record.ReceivedDate.ToString("yyyy-MM-dd HH:mm")
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            @record.Quantity
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            @record.UnitPrice.ToString("C")
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            @record.TotalPrice.ToString("C")
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+              else
+              {
+                <p class="text-gray-500">No previous goods received records found for this item.</p>
+              }
+            </div>
+          </div>
     </div>
   </main>
 </div>

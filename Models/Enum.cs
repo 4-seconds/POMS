@@ -19,7 +19,9 @@ namespace PurchaseOrderManagementSystem.Models
         Rejected,
         AuctionCreated,
         PendingBudgetReview,
-        Denied
+        Denied,
+        DirectPurchased,
+        Procured
     }
     /// <summary>
     /// Defines the possible statuses for a user account.
@@ -50,7 +52,6 @@ namespace PurchaseOrderManagementSystem.Models
     public enum AuctionStatus
     {
         Open,
-        Closed,
-        Cancelled
+        Closed
     }
 }

@@ -40,6 +40,8 @@ namespace PurchaseOrderManagementSystem.Models
         [ForeignKey("Branch")]
         public Guid? BranchId { get; set; }
 
+        public Boolean PasswordResetRequired { get; set; } = true;
+
         /// <summary>
         /// Gets or sets the navigation property to the Branch associated with the user.
         /// </summary>

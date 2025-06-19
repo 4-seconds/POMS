@@ -2,163 +2,247 @@
 @model Supplier
 
 @{
-    ViewData["Title"] = "Supplier Details";
-    Layout = "_Layout";
+ViewData["Title"] = "Supplier Details";
+Layout = "_Layout";
 }
 
 <div class="min-h-screen bg-gray-50 py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow rounded-lg overflow-hidden">
-            <!-- Header -->
-            <div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Supplier Details</h3>
-                        <p class="mt-1 max-w-2xl text-sm text-gray-500">Detailed information about the supplier account.</p>
-                    </div>
-                    <div class="flex space-x-3">
-                        <a asp-action="ManageSuppliers" 
-                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                            </svg>
-                            Back to Suppliers
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Supplier Information -->
-            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                    <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Business Name</dt>
-                        <dd class="mt-1 text-sm text-gray-900">@Model.BusinessName</dd>
-                    </div>
-
-                    <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">TIN Number</dt>
-                        <dd class="mt-1 text-sm text-gray-900">@Model.TinNumber</dd>
-                    </div>
-
-                    <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Status</dt>
-                        <dd class="mt-1">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                @(Model.Status == SupplierStatus.Active ? "bg-green-100 text-green-800" : 
-                                  Model.Status == SupplierStatus.Pending ? "bg-yellow-100 text-yellow-800" : 
-                                  Model.Status == SupplierStatus.Inactive ? "bg-gray-100 text-gray-800" :
-                                  "bg-red-100 text-red-800")">
-                                @Model.Status
-                            </span>
-                        </dd>
-                    </div>
-
-                    <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Phone Number</dt>
-                        <dd class="mt-1 text-sm text-gray-900">@Model.PhoneNumber</dd>
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <dt class="text-sm font-medium text-gray-500">Address</dt>
-                        <dd class="mt-1 text-sm text-gray-900">
-                            @Model.Street<br />
-                            @Model.City, @Model.State<br />
-                            @Model.Country
-                        </dd>
-                    </div>
-                </dl>
-            </div>
-
-            <!-- Associated User Account -->
-            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                <h4 class="text-lg font-medium text-gray-900 mb-4">Associated User Account</h4>
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                        <div class="sm:col-span-1">
-                            <dt class="text-sm font-medium text-gray-500">Username</dt>
-                            <dd class="mt-1 text-sm text-gray-900">@Model.User.UserName</dd>
-                        </div>
-
-                        <div class="sm:col-span-1">
-                            <dt class="text-sm font-medium text-gray-500">Email</dt>
-                            <dd class="mt-1 text-sm text-gray-900">@Model.User.Email</dd>
-                        </div>
-
-                        <div class="sm:col-span-1">
-                            <dt class="text-sm font-medium text-gray-500">Full Name</dt>
-                            <dd class="mt-1 text-sm text-gray-900">@Model.User.FirstName @Model.User.LastName</dd>
-                        </div>
-
-                        <div class="sm:col-span-1">
-                            <dt class="text-sm font-medium text-gray-500">Account Status</dt>
-                            <dd class="mt-1">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    @(Model.User.AccountStatus == AccountStatus.Active ? "bg-green-100 text-green-800" : 
-                                      Model.User.AccountStatus == AccountStatus.Pending ? "bg-yellow-100 text-yellow-800" : 
-                                      "bg-red-100 text-red-800")">
-                                    @Model.User.AccountStatus
-                                </span>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="mt-4">
-                        <a asp-action="ViewUser" asp-route-id="@Model.User.Id" 
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                            </svg>
-                            View User Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Supplier Actions -->
-            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                <div class="flex justify-end space-x-3">
-                    @if (Model.Status == SupplierStatus.Pending)
-                    {
-                        <form asp-action="ApproveSupplier" asp-route-id="@Model.Id" method="post" class="inline">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" 
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                </svg>
-                                Approve Supplier
-                            </button>
-                        </form>
-                        <form asp-action="RejectSupplier" asp-route-id="@Model.Id" method="post" class="inline"
-                            onsubmit="return confirm('Are you sure you want to reject this supplier? This will delete their account.');">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" 
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                                Reject Supplier
-                            </button>
-                        </form>
-                    }
-                    else if (Model.Status == SupplierStatus.Active)
-                    {
-                        <form asp-action="SuspendSupplier" asp-route-id="@Model.Id" method="post" class="inline"
-                            onsubmit="return confirm('Are you sure you want to suspend this supplier?');">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" 
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                                Suspend Supplier
-                            </button>
-                        </form>
-                    }
-                </div>
-            </div>
+  <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <!-- Header -->
+      <div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Supplier Details</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Detailed information about the supplier account.</p>
+          </div>
+          <div class="flex space-x-3">
+            <a asp-action="ManageSuppliers"
+              class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                  clip-rule="evenodd" />
+              </svg>
+              Back to Suppliers
+            </a>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
 
+      <!-- Supplier Information -->
+      <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Business Name</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.BusinessName</dd>
+          </div>
+
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Contact Person</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.ContactPerson</dd>
+          </div>
+
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Contact Email</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.ContactEmail</dd>
+          </div>
+
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">TIN Number</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.TinNumber</dd>
+          </div>
+
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Phone Number</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.PhoneNumber</dd>
+          </div>
+
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Status</dt>
+            <dd class="mt-1">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                @(Model.Status == SupplierStatus.Active ? " bg-green-100 text-green-800" :
+                Model.Status==SupplierStatus.Pending ? "bg-yellow-100 text-yellow-800" :
+                Model.Status==SupplierStatus.Inactive ? "bg-gray-100 text-gray-800" : "bg-red-100 text-red-800" )">
+                @Model.Status
+              </span>
+            </dd>
+          </div>
+
+
+
+          <div class="sm:col-span-2">
+            <dt class="text-sm font-medium text-gray-500">Address</dt>
+            <dd class="mt-1 text-sm text-gray-900">
+              @Model.Street<br />
+              @Model.City, @Model.State<br />
+              @Model.Country
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Payment Information -->
+      <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-lg font-medium text-gray-900 mb-4">Payment Information</h4>
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Payment Method 1</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.PaymentMethod1</dd>
+          </div>
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Payment Method 1 Bank ID</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.PaymentMethod1BankId</dd>
+          </div>
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Payment Method 2</dt>
+            <dd class="mt-1 text-sm text-gray-900">@Model.PaymentMethod2</dd>
+          </div>
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Payment Method 2 Bank ID</dt>
+            <dd class="mt-1 text-sm text-gray-900">@(Model.PaymentMethod2BankId?.ToString() ?? "N/A")</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Documents -->
+      <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-lg font-medium text-gray-900 mb-4">Documents</h4>
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">Trade License</dt>
+            <dd class="mt-1 text-sm text-gray-900">
+              @if (!string.IsNullOrEmpty(Model.TradeLicenseFilePath))
+              {
+              <a href="/uploads/@Model.TradeLicenseFilePath" target="_blank"
+                class="text-blue-600 hover:text-blue-800">View
+                Document</a>
+              }
+              else
+              {
+              <span>N/A</span>
+              }
+            </dd>
+          </div>
+          <div class="sm:col-span-1">
+            <dt class="text-sm font-medium text-gray-500">TIN Number Document</dt>
+            <dd class="mt-1 text-sm text-gray-900">
+              @if (!string.IsNullOrEmpty(Model.TinNumberFilePath))
+              {
+              <a href="/uploads/@Model.TinNumberFilePath" target="_blank" class="text-blue-600 hover:text-blue-800">View
+                Document</a>
+              }
+              else
+              {
+              <span>N/A</span>
+              }
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Associated User Account -->
+      <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-lg font-medium text-gray-900 mb-4">Associated User Account</h4>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Username</dt>
+              <dd class="mt-1 text-sm text-gray-900">@Model.User.UserName</dd>
+            </div>
+
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Email</dt>
+              <dd class="mt-1 text-sm text-gray-900">@Model.User.Email</dd>
+            </div>
+
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Full Name</dt>
+              <dd class="mt-1 text-sm text-gray-900">@Model.User.FirstName @Model.User.LastName</dd>
+            </div>
+
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">Account Status</dt>
+              <dd class="mt-1">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    @(Model.User.AccountStatus == AccountStatus.Active ? " bg-green-100 text-green-800"
+                  : Model.User.AccountStatus==AccountStatus.Pending ? "bg-yellow-100 text-yellow-800"
+                  : "bg-red-100 text-red-800" )">
+                  @Model.User.AccountStatus
+                </span>
+              </dd>
+            </div>
+          </dl>
+          <div class="mt-4">
+            <a asp-action="ViewUser" asp-route-id="@Model.User.Id"
+              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                <path fill-rule="evenodd"
+                  d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                  clip-rule="evenodd" />
+              </svg>
+              View User Details
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supplier Actions -->
+      <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div class="flex justify-end space-x-3">
+          @if (Model.Status == SupplierStatus.Pending)
+          {
+          <form asp-action="ApproveSupplier" asp-route-id="@Model.Id" method="post" class="inline">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg>
+              Approve Supplier
+            </button>
+          </form>
+          <form asp-action="RejectSupplier" asp-route-id="@Model.Id" method="post" class="inline"
+            onsubmit="return confirm('Are you sure you want to reject this supplier? This will delete their account.');">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd" />
+              </svg>
+              Reject Supplier
+            </button>
+          </form>
+          }
+          else if (Model.Status == SupplierStatus.Active)
+          {
+          <form asp-action="SuspendSupplier" asp-route-id="@Model.Id" method="post" class="inline"
+            onsubmit="return confirm('Are you sure you want to suspend this supplier?');">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd" />
+              </svg>
+              Suspend Supplier
+            </button>
+          </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

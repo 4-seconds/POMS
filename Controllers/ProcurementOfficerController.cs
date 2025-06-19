@@ -44,6 +44,7 @@ namespace PurchaseOrderManagementSystem.Controllers
         {
             var request = await _context.PurchaseRequests
                 .Include(pr => pr.existingItem)
+                .Include(pr => pr.Branch) // Include the Branch navigation property
                 .FirstOrDefaultAsync(pr => pr.Id == id);
 
             if (request == null)
@@ -127,6 +128,7 @@ namespace PurchaseOrderManagementSystem.Controllers
             var auction = await _context.Auctions
                 .Include(a => a.PurchaseRequest)
                 .ThenInclude(pr => pr.existingItem)
+                .Include(a => a.PurchaseRequest.Branch) // Include the Branch navigation property
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (auction == null)
@@ -277,6 +279,8 @@ namespace PurchaseOrderManagementSystem.Controllers
         public async Task<IActionResult> EditAuctionDeadlines(string id)
         {
             var auction = await _context.Auctions
+              .Include(a => a.PurchaseRequest)
+              .Include(a => a.PurchaseRequest.existingItem)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (auction == null)
@@ -307,12 +311,25 @@ namespace PurchaseOrderManagementSystem.Controllers
             return RedirectToAction(nameof(ViewAuction), new { id = id });
         }
 
-        public async Task<IActionResult> AllAuctions()
+        public async Task<IActionResult> ActiveAuctions()
         {
             var auctions = await _context.Auctions
                 .Include(a => a.PurchaseRequest)
                 .Include(a => a.PurchaseRequest.existingItem)
                 .Include(a => a.Bids)
+                .Where(a => a.Status == AuctionStatus.Open)
+                .OrderByDescending(a => a.EndDate)
+                .ToListAsync();
+            return View(auctions);
+        }
+
+        public async Task<IActionResult> ArchivedAuctions()
+        {
+            var auctions = await _context.Auctions
+                .Include(a => a.PurchaseRequest)
+                .Include(a => a.PurchaseRequest.existingItem)
+                .Include(a => a.Bids)
+                .Where(a => a.Status == AuctionStatus.Closed)
                 .ToListAsync();
             return View(auctions);
         }
@@ -367,6 +384,13 @@ namespace PurchaseOrderManagementSystem.Controllers
                 // 2. Update PurchaseOrder status
                 purchaseOrder.Status = "Completed";
                 purchaseOrder.UpdatedAt = DateTime.UtcNow;
+
+                // 3. Update PurchaseRequest status to Procured
+                if (purchaseOrder.PurchaseRequest != null)
+                {
+                    purchaseOrder.PurchaseRequest.Status = PurchaseRequestStatus.Procured;
+                    purchaseOrder.PurchaseRequest.UpdatedAt = DateTime.UtcNow;
+                }
 
                 // 3. Initiate Payment Transfer via Chapa API
                 var chapaSecretKey = _configuration["Chapa:SecretKey"];
@@ -499,6 +523,26 @@ namespace PurchaseOrderManagementSystem.Controllers
                 .ToListAsync();
 
             return View(receivedGoods);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DirectPurchase(string id)
+        {
+            var request = await _context.PurchaseRequests.FirstOrDefaultAsync(pr => pr.Id == id);
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            request.Status = PurchaseRequestStatus.DirectPurchased;
+            request.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Purchase request status updated to Direct Purchased.";
+            return RedirectToAction(nameof(ViewPurchaseRequest), new { id = id });
         }
     }
 }

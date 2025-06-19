@@ -339,6 +339,7 @@ namespace PurchaseOrderManagementSystem.Data
                         {
                             Id = Guid.NewGuid().ToString(),
                             ExistingItemId = randomItem.Id,
+                            existingItem = randomItem,
                             quantity = random.Next(1, 100), // Random quantity
                             Status = (PurchaseRequestStatus)random.Next(0, Enum.GetNames(typeof(PurchaseRequestStatus)).Length), // Random status
                             CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 60)), // Random creation date within last 60 days
@@ -384,7 +385,7 @@ namespace PurchaseOrderManagementSystem.Data
                             StartDate = startDate,
                             EndDate = endDate,
                             DeliveryDeadline = deliveryDeadline,
-                            Status = (random.Next(1, 101) <= 80) ? AuctionStatus.Open : (random.Next(0, 2) == 0 ? AuctionStatus.Closed : AuctionStatus.Cancelled), // 80% chance of Open, 10% Closed, 10% Cancelled
+                            Status = (random.Next(1, 101) <= 80) ? AuctionStatus.Open : AuctionStatus.Closed ,
                             CreatedAt = startDate,
                             UpdatedAt = DateTime.UtcNow
                         });

@@ -1,0 +1,107 @@
+@model PurchaseOrderManagementSystem.Models.ViewModels.SupplierSettingsViewModel
+
+@{
+ViewData["Title"] = "Supplier Settings";
+}
+
+
+<div class="flex justify-center bg-gray-50 p-4">
+  <div class="w-full max-w-lg">
+    <form asp-action="Settings" method="post" class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+      <h1 class="text-2xl font-bold mb-4">Supplier Settings</h1>
+      <div asp-validation-summary="ModelOnly" class="text-red-500 text-xs italic mb-4"></div>
+      <div class="mb-4">
+        <label asp-for="BusinessName" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="BusinessName"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="BusinessName" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="ContactPerson" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="ContactPerson"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="ContactPerson" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="ContactEmail" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="ContactEmail"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="ContactEmail" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="PhoneNumber" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="PhoneNumber"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="PhoneNumber" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="TinNumber" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="TinNumber"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="TinNumber" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="Street" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="Street"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="Street" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="City" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="City"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="City" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="State" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="State"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="State" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="Country" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="Country"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="Country" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="PaymentMethod1" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="PaymentMethod1"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="PaymentMethod1" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="PaymentMethod1BankId" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <select asp-for="PaymentMethod1BankId" asp-items="Model.Banks"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="">-- Select Bank --</option>
+        </select>
+        <span asp-validation-for="PaymentMethod1BankId" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-4">
+        <label asp-for="PaymentMethod2" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <input asp-for="PaymentMethod2"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <span asp-validation-for="PaymentMethod2" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="mb-6">
+        <label asp-for="PaymentMethod2BankId" class="block text-gray-700 text-sm font-bold mb-2"></label>
+        <select asp-for="PaymentMethod2BankId" asp-items="Model.Banks"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="">-- Select Bank --</option>
+        </select>
+        <span asp-validation-for="PaymentMethod2BankId" class="text-red-500 text-xs italic"></span>
+      </div>
+      <div class="flex items-center justify-between">
+        <button type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PurchaseOrderManagementSystem.Models
@@ -11,10 +10,10 @@ namespace PurchaseOrderManagementSystem.Models
 
         [Required]
         [ForeignKey("existingItem")]
-        public string ExistingItemId { get; set; }
+        public required string ExistingItemId { get; set; }
 
         [Required]
-        public virtual Item existingItem { get; set; }
+        public required virtual Item existingItem { get; set; }
 
         [Required]
         public int quantity { get; set; }
@@ -27,9 +26,9 @@ namespace PurchaseOrderManagementSystem.Models
         public PurchaseRequestStatus Status { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public new DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public new DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Properties for the view
         public string ItemName => existingItem?.ItemName ?? "N/A";
@@ -46,5 +45,17 @@ namespace PurchaseOrderManagementSystem.Models
         /// Gets or sets the navigation property to the Branch associated with the purchase request.
         /// </summary>
         public Branch? Branch { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the user who created the purchase request.
+        /// This is a foreign key to the ApplicationUser model.
+        /// </summary>
+        [ForeignKey("CreatedByUser")]
+        public string? CreatedByUserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the navigation property to the ApplicationUser who created the purchase request.
+        /// </summary>
+        public ApplicationUser? CreatedByUser { get; set; }
     }
 }

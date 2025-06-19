@@ -5,6 +5,9 @@
   <meta charset="utf-8" />
   <title>@ViewData["Title"] - Upper Awash Agro Industry</title>
   <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <style>
     * {
       border-color: hsl(0 0% 89.8%);
@@ -19,7 +22,7 @@
 
     bool shouldShowSidebar = User.Identity.IsAuthenticated &&
                             !(currentController == "Home" && currentAction == "Index") &&
-                            !(currentController == "Account" && (currentAction == "Login" || currentAction == "Register" || currentAction == "ForgotPassword" || currentAction == "ResetPassword" || currentAction == "ConfirmEmail")) ;
+                            !(currentController == "Account" && (currentAction == "Login" || currentAction == "Register" || currentAction == "ForgotPassword" || currentAction == "ResetPassword" || currentAction == "ConfirmEmail" || currentAction == "ForgotPasswordConfirmation")) ;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +31,15 @@
   <meta charset="utf-8" />
   <title>@ViewData["Title"] - Upper Awash Agro Industry</title>
   <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <style>
+*{
+  font-family: 'Geist', sans-serif;
+}
     * {
       border-color: hsl(0 0% 89.8%);
     }
@@ -37,28 +48,6 @@
 </head>
 
 <body class="font-sans bg-white text-gray-900">
-  <header class="px-4 py-2 flex bg-gray-200 justify-between items-center">
-    <a href="/">
-      <h1 class="text-xl font-semibold">Upper Awash Agro Industry</h1>
-    </a>
-    <nav>
-      <ul class="flex space-x-4 items-center">
-        @if (User.Identity.IsAuthenticated) {
-        @* Supply Logistics role *@
-        <li>
-          <form asp-controller="Account" asp-action="Logout" method="post" class="inline">
-            <button type="submit"
-              class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">Logout</button>
-          </form>
-        </li>
-        }
-        else
-        {
-        <li><a asp-controller="Account" asp-action="Login" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">Login</a></li>
-        }
-      </ul>
-    </nav>
-  </header>
 
   <div class="flex">
     @if (shouldShowSidebar)
@@ -71,14 +60,13 @@
             @if (User.IsInRole("SupplyLogistics"))
             {
             <li><a asp-controller="SupplyLogistics" asp-action="Index" class="block hover:bg-black/10 p-2 rounded">Dashboard</a></li>
-            <li><a asp-controller="SupplyLogistics" asp-action="Items" class="block hover:bg-black/10 p-2 rounded">Items</a></li>
             <li><a asp-controller="SupplyLogistics" asp-action="Requests" class="block hover:bg-black/10 p-2 rounded">Requests</a></li>
+            <li><a asp-controller="SupplyLogistics" asp-action="CreateRequest" class="block hover:bg-black/10 p-2 rounded">Create Request</a></li>
             }
             @* Budget role *@
             @if (User.IsInRole("Budget"))
             {
             <li><a asp-controller="Budget" asp-action="Index" class="block hover:bg-black/10 p-2 rounded">Dashboard</a></li>
-            <li><a asp-controller="Budget" asp-action="Requests" class="block hover:bg-black/10 p-2 rounded">Requests</a></li>
             }
             @* General Manager role *@
             @if (User.IsInRole("GeneralManager"))
@@ -90,7 +78,9 @@
             @if (User.IsInRole("ProcurementOfficer"))
             {
             <li><a asp-controller="ProcurementOfficer" asp-action="Index" class="block hover:bg-black/10 p-2 rounded">Dashboard</a></li>
-            <li><a asp-controller="ProcurementOfficer" asp-action="AllAuctions" class="block hover:bg-black/10 p-2 rounded">Auctions</a></li>
+            <li><a asp-controller="ProcurementOfficer" asp-action="ApprovedPurchaseRequests" class="block hover:bg-black/10 p-2 rounded">Requests</a></li>
+            <li><a asp-controller="ProcurementOfficer" asp-action="ActiveAuctions" class="block hover:bg-black/10 p-2 rounded">Active Auctions</a></li>
+            <li><a asp-controller="ProcurementOfficer" asp-action="ArchivedAuctions" class="block hover:bg-black/10 p-2 rounded">Archived Auctions</a></li>
             <li><a asp-controller="ProcurementOfficer" asp-action="MyPurchaseOrders" class="block hover:bg-black/10 p-2 rounded">Purchase Orders</a></li>
             <li><a asp-controller="ProcurementOfficer" asp-action="ReceivedGoods" class="block hover:bg-black/10 p-2 rounded">Received Goods</a></li>
             }
@@ -102,6 +92,7 @@
             <li><a asp-controller="Supplier" asp-action="MyBids" class="block hover:bg-black/10 p-2 rounded">My Bids</a></li>
             <li><a asp-controller="Supplier" asp-action="MyPurchaseOrders" class="block hover:bg-black/10 p-2 rounded">Purchase Orders</a></li>
             <li><a asp-controller="Supplier" asp-action="Transactions" class="block hover:bg-black/10 p-2 rounded">Transactions</a></li>
+            <li><a asp-controller="Supplier" asp-action="Settings" class="block hover:bg-black/10 p-2 rounded">Settings</a></li>
             }
             @* Admin role *@
             @if (User.IsInRole("Admin"))
@@ -118,7 +109,30 @@
     </aside>
     }
 
-    <div class="flex-1 ">
+    <div class="flex-1 @(shouldShowSidebar ? "max-w-[calc(100vw-256px)]" : "")">
+
+  <header class="p-4 flex bg-white border-b justify-between items-center">
+    <a href="/">
+      <h1 class="text-xl font-semibold">Upper Awash Agro Industry</h1>
+    </a>
+    <nav>
+      <ul class="flex space-x-4 items-center">
+        @if (User.Identity.IsAuthenticated) {
+        @* Supply Logistics role *@
+        <li>
+          <form asp-controller="Account" asp-action="Logout" method="post" class="inline">
+            <button type="submit"
+              class="bg-red-500 hover:bg-red-700 text-sm text-white font-semibold py-1 px-4 rounded">Logout</button>
+          </form>
+        </li>
+        }
+        else
+        {
+        <li><a asp-controller="Account" asp-action="Login" class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded">Login</a></li>
+        }
+      </ul>
+    </nav>
+  </header>
       @if (TempData["SuccessMessage"] != null)
       {
       <section class="p-4 bg-white">

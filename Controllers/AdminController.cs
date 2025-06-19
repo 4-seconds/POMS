@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using PurchaseOrderManagementSystem.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace PurchaseOrderManagementSystem.Controllers
 {
@@ -234,7 +233,7 @@ namespace PurchaseOrderManagementSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewUser(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.Users.Include(u => u.Branch).FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -304,6 +303,72 @@ namespace PurchaseOrderManagementSystem.Controllers
                 }
             }
 
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var user = await _userManager.Users.Include(u => u.Branch).FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var branches = await _context.Branches.ToListAsync();
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                BranchId = user.BranchId,
+                AccountStatus = user.AccountStatus,
+                PasswordResetRequired = user.PasswordResetRequired
+            };
+
+            ViewBag.Branches = branches;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Branches = await _context.Branches.ToListAsync();
+                return View(model);
+            }
+
+            var user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.UserName = model.Email; // Assuming email is the username
+            user.PhoneNumber = model.PhoneNumber;
+            user.BranchId = model.BranchId;
+            user.AccountStatus = model.AccountStatus;
+            user.PasswordResetRequired = model.PasswordResetRequired;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                ViewBag.Branches = await _context.Branches.ToListAsync();
+                return View(model);
+            }
+
+            TempData["SuccessMessage"] = "User updated successfully!";
             return RedirectToAction(nameof(ManageUsers));
         }
 
